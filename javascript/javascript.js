@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	initPreviewControl();
+});
+
+function initPreviewControl() {
 	$('#previewcontrol').submit(function(e) {
 		e.preventDefault();
 		var width = $('#previewwidth').val();
@@ -8,5 +12,4 @@ $(document).ready(function() {
 			'height': height
 		});
 	});
-});
-
+}
