@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>infoscreen editor</title>
+	<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAprGMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEREREREAAAERERERERAAERAAAAAAEQEQAAARAAABERAAABEAAAEREAAAEQAAAREQAAARAAABERAAABEAAAEREAAAEQAAAREQAAARAAABERAAAAAAAAEREAAAEQAAAREQAAARAAABEBEAAAAAABEAAREREREREAAAEREREREADgBwAAwAMAAI/5AAA+fAAAPnwAAD58AAA+fAAAPnwAAD58AAA+fAAAP/wAAD58AAA+fAAAn/kAAMADAADgBwAA" rel="icon" type="image/x-icon" />
+	
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="style/normalize-4_1_1.css" />
+	<link rel="stylesheet" href="style/edit.css" />
+</head>
+<body>
+	<div id="preview"></div>
+	
+	<div id="controls">
+		<!-- Preview controls -->
+		<div>
+			<b>Preview:</b>
+			<form id="previewcontrol" action="" method="GET">
+				<table>
+					<thead>
+						<th>Width</th>
+						<th>Height</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<input name="width" id="previewwidth" type="text" value="800px" />
+							</td>
+							<td>
+								<input name="width" id="previewheight" type="text" value="300px" />
+							</td>
+							<td>
+								<input type="submit" value="Set preview size" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+	</div>
+	
+	<!-- Scripts -->
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> <!-- JQuery v2.2.4 -->
+	<script src="javascript/javascript.js"></script>
+</body>
+</html>

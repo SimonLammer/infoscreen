@@ -1,7 +1,12 @@
 $(document).ready(function() {
-	$("#main").html(getMainTableHtml());
+	$('#previewcontrol').submit(function(e) {
+		e.preventDefault();
+		var width = $('#previewwidth').val();
+		var height = $('#previewheight').val();
+		$('#preview').css({
+			'width': width,
+			'height': height
+		});
+	});
 });
 
-function getMainTableHtml() {
-	return "";
-}

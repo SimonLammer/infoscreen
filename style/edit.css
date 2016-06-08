@@ -1,0 +1,10 @@
+body {
+	padding: 10px;
+}
+#preview {
+	display: inline-block;
+	background-color: #ddd;
+	margin: 10px;
+	width: 800px;
+	height: 300px;
+}
