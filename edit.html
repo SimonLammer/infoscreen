@@ -34,6 +34,23 @@
 				</tbody>
 			</table>
 		</div>
+
+		<div>
+			<b>Views:</b> <button id="button-add_view">Add View</button>
+			<table id="viewcontrol">
+				<thead>
+				</thead>
+				<tbody>
+					<tr id="viewslist" rv-each-view="viewslist">
+						<td>
+							<input type="hidden" class="viewid" rv-value="view.id" />
+							<button class="new">Show view id</button>
+						</td>
+						<td>{ view.name }</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 	
 	<!-- Scripts -->
