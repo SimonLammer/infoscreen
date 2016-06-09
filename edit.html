@@ -17,32 +17,29 @@
 		<!-- Preview controls -->
 		<div>
 			<b>Preview:</b>
-			<form id="previewcontrol" action="" method="GET">
-				<table>
-					<thead>
-						<th>Width</th>
-						<th>Height</th>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<input name="width" id="previewwidth" type="text" value="800px" />
-							</td>
-							<td>
-								<input name="width" id="previewheight" type="text" value="300px" />
-							</td>
-							<td>
-								<input type="submit" value="Set preview size" />
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
+			<table id="previewcontrol">
+				<thead>
+					<th>Width</th>
+					<th>Height</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<input name="width" id="previewwidth" type="text" value="800px" rv-value="width" />
+						</td>
+						<td>
+							<input name="width" id="previewheight" type="text" value="300px" rv-value="height" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 	
 	<!-- Scripts -->
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> <!-- JQuery v2.2.4 -->
+	<script src="https://raw.githubusercontent.com/mikeric/rivets/v0.8.0/dist/rivets.bundled.min.js"></script> <!-- Rivets.js + Sightglass.js v0.8.0 -->
+	<script src="javascript/entities.js"></script>
 	<script src="javascript/javascript.js"></script>
 </body>
 </html>
