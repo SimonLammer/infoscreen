@@ -9,6 +9,10 @@ distance may be any css distance (e.g. 70px)
 
 new Align('top', '70px); // 70px from the top border
 */
+window.alignOrientations = {
+	vertical: ['top', 'bottom'],
+	horizontal: ['right', 'left']
+};
 function Align(orientation, distance) {
 	this.orientation = orientation;
 	this.distance = distance;
@@ -25,5 +29,4 @@ function View() {
 	this.height = '100px';
 	this.width = '100px';
 	this.zindex = 0;
-	this.rotation = 0;
 }

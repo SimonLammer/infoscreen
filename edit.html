@@ -11,7 +11,13 @@
 	<link rel="stylesheet" href="style/edit.css" />
 </head>
 <body>
-	<div id="preview"></div>
+	<div id="preview">
+		<div id="previewviews">
+			<div rv-viewid="view.id" rv-each-view="viewslist">
+				{view.name}
+			</div>
+		</div>
+	</div>
 	
 	<div id="controls">
 		<!-- Preview controls -->
@@ -39,14 +45,36 @@
 			<b>Views:</b> <button id="button-add_view">Add View</button>
 			<table id="viewcontrol">
 				<thead>
+					<th></th>
+					<th>Name</th>
+					<th>Vertical Align</th>
+					<th>Horizontal Align</th>
+					<th>Width</th>
+					<th>Height</th>
+					<th>Z-Index</th>
 				</thead>
 				<tbody>
 					<tr id="viewslist" rv-each-view="viewslist">
 						<td>
 							<input type="hidden" class="viewid" rv-value="view.id" />
-							<button class="new">Show view id</button>
+							<button class="new">X</button>
 						</td>
-						<td>{ view.name }</td>
+						<td><input type="text" rv-value="view.name" rv-on-keyup="updatePreview" /></td>
+						<td>
+							<select rv-value="view.verticalAlign.orientation" rv-on-change="updatePreview" >
+								<option rv-value="alignorientation" rv-each-alignorientation="verticalalignorientations">{ alignorientation }</option>
+							</select>
+							<input type="text" rv-value="view.verticalAlign.distance" rv-on-keyup="updatePreview" />
+						</td>
+						<td>
+							<select rv-value="view.horizontalAlign.orientation" rv-on-change="updatePreview" >
+								<option rv-value="alignorientation" rv-each-alignorientation="horizontalalignorientations">{ alignorientation }</option>
+							</select>
+							<input type="text" rv-value="view.horizontalAlign.distance" rv-on-keyup="updatePreview" />
+						</td>
+						<td><input type="text" rv-value="view.width" rv-on-keyup="updatePreview" /></td>
+						<td><input type="text" rv-value="view.height" rv-on-keyup="updatePreview" /></td>
+						<td><input type="text" rv-value="view.zindex" rv-on-keyup="updatePreview" /></td>
 					</tr>
 				</tbody>
 			</table>

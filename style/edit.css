@@ -4,7 +4,19 @@ body {
 #preview {
 	display: inline-block;
 	background-color: #ddd;
+	position:relative;
 	margin: 10px;
 	width: 800px;
 	height: 300px;
+}
+
+#previewviews > div {
+	display: inline-block;
+	border: 1px solid black;
+	position: absolute;
+	text-align: center;
+}
+
+#controls {
+	position: relative;
 }
