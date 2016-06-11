@@ -10,6 +10,11 @@ body {
 	height: 300px;
 }
 
+#previewviews {
+	width: 100%;
+	height: 100%;
+}
+
 #previewviews > div {
 	display: inline-block;
 	border: 1px solid black;

@@ -8,6 +8,7 @@
 	
 	<!-- Stylesheets -->
 	<link rel="stylesheet" href="style/normalize-4_1_1.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/jquery-ui-git.css" />
 	<link rel="stylesheet" href="style/edit.css" />
 </head>
 <body>
@@ -53,8 +54,8 @@
 					<th>Height</th>
 					<th>Z-Index</th>
 				</thead>
-				<tbody>
-					<tr id="viewslist" rv-each-view="viewslist">
+				<tbody id="viewslist" >
+					<tr rv-each-view="viewslist" class="ui-state-default">
 						<td>
 							<input type="hidden" class="viewid" rv-value="view.id" />
 							<button class="new">X</button>
@@ -83,6 +84,7 @@
 	
 	<!-- Scripts -->
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> <!-- JQuery v2.2.4 -->
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> <!-- JQuery UI v1.11.4 -->
 	<script src="https://rawgit.com/mikeric/rivets/v0.8.0/dist/rivets.bundled.min.js"></script> <!-- Rivets.js + Sightglass.js v0.8.0 -->
 	<script src="javascript/entities.js"></script>
 	<script src="javascript/javascript.js"></script>
