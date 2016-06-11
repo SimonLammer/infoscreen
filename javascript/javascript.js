@@ -67,13 +67,8 @@ function refreshPreview() {
 			containment: 'parent',
 			cursor: 'crosshair',
 			stop: function(e, ui) {
-				//alert($(this).attr('viewid'));
 				var viewid = $(ui.helper).attr('viewid');
 				var viewIndex = getViewIndexById(viewid);
-				console.log('id:', viewid, ' - index:', viewIndex, ' - p.top:', ui.position.top);
-				window.asdf = ui;
-				//if (true)return;
-				
 				var previewWidth = $('#preview').width();
 				var previewHeight = $('#preview').height();
 				var viewWidth = $(ui.helper).width();
