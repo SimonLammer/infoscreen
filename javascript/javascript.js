@@ -1,7 +1,8 @@
-window.previewSize = {
+window.previewSettings = {
 	'width': '800px',
-	'height': '300px'
-}
+	'height': '300px',
+	'show_modules': false
+};
 window.views = [];
 
 $(document).ready(function() {
@@ -20,12 +21,15 @@ function initPreview() {
 }
 
 function initPreviewcontrol() {
-	window.previewcontrolbind = rivets.bind($('#previewcontrol'), window.previewSize);
-	sightglass(previewSize, 'height', function() {
-		$('#preview').css('height', previewSize.height);
+	window.previewcontrolbind = rivets.bind($('#previewcontrol'), previewSettings);
+	sightglass(previewSettings, 'height', function() {
+		$('#preview').css('height', previewSettings.height);
 	});
-	sightglass(previewSize, 'width', function() {
-		$('#preview').css('width', previewSize.width);
+	sightglass(previewSettings, 'width', function() {
+		$('#preview').css('width', previewSettings.width);
+	});
+	sightglass(previewSettings, 'show_modules', function() {
+		console.log(previewSettings.show_modules);
 	});
 }
 
