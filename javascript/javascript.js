@@ -101,6 +101,14 @@ function refreshPreview() {
 					}
 				}
 			}
+		}).resizable({
+			constrainment: '#previewviews',
+			handles: 'all',
+			stop: function(e, ui) {
+				var viewid = $(ui.helper).attr('viewid');
+				var viewIndex = getViewIndexById(viewid);
+				 //TODO handle resize (set view's size)
+			}
 		});
 	}
 }
