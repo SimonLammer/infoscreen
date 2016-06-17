@@ -11,6 +11,7 @@ $(document).ready(function() {
 	initPreview();
 	initPreviewcontrol();
 	initViewcontrol();
+	initModuleEditor();
 
 	// debug
 	views.push(new View());
@@ -54,6 +55,12 @@ function initViewcontrol() {
 		refreshPreview();
 	});
 	$('#viewslist').sortable();
+}
+
+function initModuleEditor() {
+	rivets.bind($('#modulecontrol'), {
+		'viewslist': views
+	});
 }
 
 function refreshPreview() {
