@@ -15,10 +15,14 @@ $(document).ready(function() {
 	initVariablecontrol();
 	initModuleEditor();
 
-	// generate initial view
+	// generate Hello World
 	var view = new View()
 	view.id = getNextId();
 	views.push(view);
+	var variable = new Variable('Hello World!');
+	variable.id = getNextId();
+	variable.description = 'Text';
+	variables.push(variable);
 });
 
 function initPreview() {
@@ -80,7 +84,6 @@ function initVariablecontrol() {
 					variableValueInput.val()
 				);
 			});
-			window.x = $(this);
 			var setVariable = function(newValue) {
 				variableValueInput.val(newValue);
 			};
@@ -93,6 +96,7 @@ function initVariablecontrol() {
 				variables.splice(index, 1);
 			})
 			.removeClass('new');
+			setVariable(variables[index].value);
 		});
 	});
 }
