@@ -1,16 +1,12 @@
 /*
-args is an array of Variable instances!
-
-module demo:
-var a = new Variable(1); var b = new Variable(3); var module = new Module('add', function(a,b){return a+b;}, [a,b]); console.log(module.output.value); module.output.addObserver(function(v){console.log(v);}); //copy-paste this line
-a.setValue(5); // 5 + 3 = 8
-b.setValue(4); // 5 + 4 = 9
+args has to be an array of Variable instances!
+output has to be a Variable instance!
 */
-function Module(description, func, args) {
+function Module(description, func, args, output) {
 	this.description = description;
 	this.func = func;
 	this.args = args;
-	this.output = new Variable();
+	this.output = output;
 	this.update = function() {
 		var argsValues = [];
 		for (var i = 0; i < args.length; i++) {
@@ -18,10 +14,33 @@ function Module(description, func, args) {
 		}
 		var result = func.apply(this, argsValues);
 		this.output.setValue(result);
+		return result;
 	};
 	this.update();
-	var self = this; // keep a reference to this, because the context of the observe function will be the variable - not the module!
-	for (var i = 0; i < args.length; i++) {
-		args[i].addObserver(function(){self.update();});
-	}
+
+	var self = this; // keep a reference to this, because the context of the callback function will be the variable - not the module!
+	var callback = function() {
+		self.update();
+	};
+	this.enabled = false;
+	this.enable = function() {
+		if (this.enabled) {
+			return;
+		}
+		for (var i = 0; i < args.length; i++) {
+			args[i].addObserver(callback);
+		}
+		this.enabled = true;
+		this.update();
+	};
+	this.disable = function() {
+		if (!this.enabled) {
+			return;
+		}
+		for (var i = 0; i < args.length; i++) {
+			args[i].removeObserver(callback);
+		}
+		this.enabled = false;
+	};
+	this.enable();
 }
