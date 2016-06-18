@@ -110,6 +110,32 @@
 			</table>
 		</div>
 
+		<div id="variables-editor">
+			<b>Variables:</b> <button id="button-add_variable">Add Variable</button>
+			<table id="variablecontrol">
+				<thead>
+					<th></th>
+					<th>Description</th>
+					<th>Value</th>
+				</thead>
+				<tbody id="variableslist">
+					<tr rv-each-variable="variableslist" class="ui-state-default">
+						<td>
+							<input type="hidden" class="variableid" rv-value="variable.id" />
+							<button class="new">X</button>
+						</td>
+						<td>
+							<input type="text" rv-value="variable.description" />
+						</td>
+						<td>
+							<input type="text" class="variablevalue" />
+							<button class="setvariable">Set new Value</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
 		<div id="module-editor">
 			<b>Modules:</b>
 			<table id="modulecontrol">

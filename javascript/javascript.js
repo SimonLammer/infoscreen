@@ -4,6 +4,7 @@ window.previewSettings = {
 	'show_modules': false
 };
 window.views = [];
+window.variables = [];
 
 $(document).ready(function() {
 	sightglass.adapters = rivets.adapters;
@@ -11,10 +12,13 @@ $(document).ready(function() {
 	initPreview();
 	initPreviewcontrol();
 	initViewcontrol();
+	initVariablecontrol();
 	initModuleEditor();
 
-	// debug
-	views.push(new View());
+	// generate initial view
+	var view = new View()
+	view.id = getNextId();
+	views.push(view);
 });
 
 function initPreview() {
@@ -42,7 +46,9 @@ function initViewcontrol() {
 		'updatePreview': refreshPreview
 	});
 	$('#button-add_view').click(function() {
-		views.push(new View());
+		var view = new View();
+		view.id = getNextId();
+		views.push(view);
 	});
 	sightglass({data: views}, 'data', function() {
 		$('#viewslist button.new').each(function(e) {
@@ -55,6 +61,40 @@ function initViewcontrol() {
 		refreshPreview();
 	});
 	$('#viewslist').sortable();
+}
+function initVariablecontrol() {
+	rivets.bind($('#variables-editor'), {
+		'variableslist': variables
+	});
+	$('#button-add_variable').click(function() {
+		var variable = new Variable('');
+		variable.id = getNextId();
+		variables.push(variable);
+	});
+	sightglass({data: variables}, 'data', function() {
+		$('#variableslist button.new').each(function(e) {
+			var variableValueInput = $(this).parent().parent().find('.variablevalue');
+			$(this).parent().parent().find('.setvariable').click(function() {
+				var variableid = $(this).parent().parent().find('.variableid').val();
+				variables[getVariableIndexById(variableid)].setValue(
+					variableValueInput.val()
+				);
+			});
+			window.x = $(this);
+			var setVariable = function(newValue) {
+				variableValueInput.val(newValue);
+			};
+			var index = getVariableIndexById($(this).parent().find('.variableid').val());
+			variables[index].addObserver(setVariable);
+			$(this).click(function() {
+				var variableid = $(this).parent().find('.variableid').val();
+				var index = getVariableIndexById(variableid);
+				variables[index].removeObserver(setVariable);
+				variables.splice(index, 1);
+			})
+			.removeClass('new');
+		});
+	});
 }
 
 function initModuleEditor() {
@@ -117,8 +157,14 @@ function refreshPreview() {
 }
 
 function getViewIndexById(viewid) {
-	for (var i = 0; i < views.length; i++) {
-		if (views[i].id == viewid) {
+	return getItemIndexById(viewid, views);
+}
+function getVariableIndexById(variableid) {
+	return getItemIndexById(variableid, variables);
+}
+function getItemIndexById(itemid, list) {
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].id == itemid) {
 			return i;
 		}
 	}
@@ -133,4 +179,9 @@ function multiplyDistance(distance, factor) {
 	var number = parseFloat(matches[1]);
 	number *= factor;
 	return number + matches[3];
+}
+
+window.lastid = 0;
+function getNextId() {
+	return ++window.lastid;
 }
