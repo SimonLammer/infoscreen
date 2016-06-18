@@ -2,13 +2,24 @@
 args has to be an array of Variable instances!
 output has to be a Variable instance!
 */
-function Module(description, func, args, output) {
+function Module(description, func, args, output, ui) {
 	this.description = description;
 	this.func = func;
 	this.args = args;
 	this.output = output;
+	this.ui = ui;
+	this.uiEnabled = false;
+	this.enableUi = function() {
+		this.ui = true;
+	};
+	this.disableUi = function() {
+		this.ui = false;
+	};
 	this.update = function() {
 		var argsValues = [];
+		if (ui && uiEnabled) {
+			argsValues.push(ui);
+		}
 		for (var i = 0; i < args.length; i++) {
 			argsValues.push(this.args[i].value);
 		}
