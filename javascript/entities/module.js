@@ -2,8 +2,7 @@
 args has to be an array of Variable instances!
 output has to be a Variable instance!
 */
-function Module(description, func, args, output, ui) {
-	this.description = description;
+function Module(func, args, output, ui) {
 	this.func = func;
 	this.args = args;
 	this.output = output;
