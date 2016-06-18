@@ -13,7 +13,9 @@ function Module(description, func, args, output) {
 			argsValues.push(this.args[i].value);
 		}
 		var result = func.apply(this, argsValues);
-		this.output.setValue(result);
+		if (this.output) {
+			this.output.setValue(result);
+		}
 		return result;
 	};
 	this.update();
