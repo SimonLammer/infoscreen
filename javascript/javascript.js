@@ -39,9 +39,6 @@ function initPreviewcontrol() {
 	sightglass(previewSettings, 'width', function() {
 		$('#preview').css('width', previewSettings.width);
 	});
-	sightglass(previewSettings, 'show_modules', function() {
-		console.log(previewSettings.show_modules);
-	});
 }
 
 function initViewcontrol() {
