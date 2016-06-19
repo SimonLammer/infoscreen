@@ -3,8 +3,7 @@ window.previewSettings = {
 	'height': '300px',
 	'show_modules': false
 };
-window.views = [];
-window.variables = [];
+window.moduleBlueprints = [];
 
 $(document).ready(function() {
 	sightglass.adapters = rivets.adapters;
@@ -14,7 +13,7 @@ $(document).ready(function() {
 	initViewcontrol();
 	initVariablecontrol();
 	initModuleEditor();
-
+	
 	// generate Hello World
 	var view = new View()
 	view.id = getNextId();
@@ -23,6 +22,9 @@ $(document).ready(function() {
 	variable.id = getNextId();
 	variable.description = 'Text';
 	variables.push(variable);
+	var moduleBlueprint = new ModuleBlueprint('ShowText', 'html');
+	moduleBlueprint.id = getNextId();
+	moduleBlueprints.push(moduleBlueprint);
 });
 
 function initPreview() {
@@ -103,7 +105,47 @@ function initVariablecontrol() {
 
 function initModuleEditor() {
 	rivets.bind($('#modulecontrol'), {
-		'viewslist': views
+		'moduleblueprintslist': moduleBlueprints,
+		'moduletypeslist': moduleTypes,
+		'variableslist': variables,
+		'viewslist': views,
+		'updatemoduletype': function() {
+			var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
+			var index = getModuleBlueprintIndexById(moduleBlueprintId);
+			moduleBlueprints[index].updateModuleType();
+		},
+		'updateoutputvariable': function() {
+			var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
+			var index = getModuleBlueprintIndexById(moduleBlueprintId);
+			moduleBlueprints[index].updateOutputVariable();
+		},
+		'updateuiview': function() {
+			var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
+			var index = getModuleBlueprintIndexById(moduleBlueprintId);
+			moduleBlueprints[index].updateUiView();
+		}
+	});
+	sightglass({data: moduleBlueprints}, 'data', function() {
+		$('#moduleblueprintslist button.new').each(function(e) {
+			$(this).click(function() {
+				var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
+				moduleBlueprints.splice(getModuleBlueprintIndexById(moduleBlueprintId), 1);
+			})
+			.removeClass('new');
+			$(this).parent().parent().find('button.updatemodule').click(function() {
+				var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
+				var moduleBlueprint = moduleBlueprints[getModuleBlueprintIndexById(moduleBlueprintId)];
+				if (moduleBlueprint.module) {
+					moduleBlueprint.module.disable();
+				}
+				moduleBlueprint.module = moduleBlueprint.getModule();
+			});
+		});
+	});
+	$('#button-add_module').click(function() {
+		var moduleBlueprint = new ModuleBlueprint('', '');
+		moduleBlueprint.id = getNextId();
+		moduleBlueprints.push(moduleBlueprint);
 	});
 }
 
@@ -160,11 +202,8 @@ function refreshPreview() {
 	}
 }
 
-function getViewIndexById(viewid) {
-	return getItemIndexById(viewid, views);
-}
-function getVariableIndexById(variableid) {
-	return getItemIndexById(variableid, variables);
+function getModuleBlueprintIndexById(moduleBlueprintId) {
+	return getItemIndexById(moduleBlueprintId, moduleBlueprints);
 }
 function getItemIndexById(itemid, list) {
 	for (var i = 0; i < list.length; i++) {

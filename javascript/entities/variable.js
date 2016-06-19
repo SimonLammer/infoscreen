@@ -1,3 +1,5 @@
+window.variables = [];
+
 function Variable(defaultValue) {
 	this.observers = [];
 	this.value = defaultValue;
@@ -25,3 +27,13 @@ Variable.prototype.setValue = function(value) {
 		this.observers[i].call(this, value, oldValue);
 	}
 };
+function getVariableIndexById(variableid) {
+	for (var i = 0; i < variables.length; i++) {
+		if (variables[i].id == variableid) {
+			return i;
+		}
+	}
+}
+function getVariableById(variableid) {
+	return variables[getVariableIndexById(variableid)];
+}

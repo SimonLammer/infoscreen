@@ -1,10 +1,10 @@
-function ModuleType(name, func, argsdescription, usesOutputVariable, usesUi) {
+function ModuleType(name, func, argsdescription, usesOutputVariable, usesUiView) {
 	this.name = name;
 	this.func = func;
 	this.argsdescription = argsdescription;
 	this.argslength = this.argsdescription.length;
 	this.usesOutputVariable = usesOutputVariable;
-	this.usesUi = usesUi;
+	this.usesUiView = usesUiView;
 }
 
 window.moduleTypes = [];

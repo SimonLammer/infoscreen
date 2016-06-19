@@ -143,14 +143,58 @@
 		<hr />
 
 		<div id="module-editor">
-			<b>Modules:</b>
+			<b>Modules:</b> <button id="button-add_module">Add Module</button>
 			<table id="modulecontrol">
 				<thead>
+					<th></th>
 					<th>Name</th>
+					<th>ModuleType</th>
+					<th>Arguments</th>
+					<th>Output</th>
+					<th>View</th>
+					<th></th>
 				</thead>
-				<tbody>
-					<tr rv-each-view="viewslist" class="ui-state-default">
-						<td><input type="text" rv-value="view.name" rv-on-keyup="updatePreview" /></td>
+				<tbody id="moduleblueprintslist">
+					<tr rv-each-moduleblueprint="moduleblueprintslist" class="ui-state-default">
+						<td>
+							<input type="hidden" class="moduleblueprintid" rv-value="moduleblueprint.id" />
+							<button class="new">X</button>
+						</td>
+						<td><input type="text" rv-value="moduleblueprint.description" /></td>
+						<td>
+							<select rv-value="moduleblueprint.moduleTypeName" rv-on-change="updatemoduletype">
+								<option rv-value="moduletype.name" rv-each-moduletype="moduletypeslist">{ moduletype.name }</option>
+							</select>
+						</td>
+						<td>
+							<ul>
+								<li rv-each-arg="moduleblueprint.argsVariables">
+									{ arg.description }
+									<select rv-value="arg.variableid">
+										<option rv-value="variable.id" rv-each-variable="variableslist">{ variable.description }</option>
+									</select>
+								</li>
+							</ul>
+						</td>
+						<td>
+							<select rv-value="moduleblueprint.outputVariableId" rv-if="moduleblueprint.usesOutputVariable" rv-on-change="updateoutputvariable">
+								<option rv-value="variable.id" rv-each-variable="variableslist">{ variable.description }</option>
+							</select>
+							<p rv-unless="moduleblueprint.usesOutputVariable">
+								----
+							</p>
+						</td>
+						<td>
+							<select rv-value="moduleblueprint.uiViewId" rv-if="moduleblueprint.usesUiView">
+								<option rv-value="view.id" rv-each-view="viewslist">{ view.name }</option>
+							</select>
+							<p rv-unless="moduleblueprint.usesUiView">
+								----
+							</p>
+						</td>
+						<td>
+							<button class="updatemodule">Update Module</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -168,6 +212,8 @@
 	<script src="javascript/entities/module_type.js"></script>
 	<script src="javascript/entities/module_blueprint.js"></script>
 	<script src="javascript/module_types/add.js"></script>
+	<script src="javascript/module_types/subtract.js"></script>
+	<script src="javascript/module_types/html.js"></script>
 	<script src="javascript/javascript.js"></script>
 </body>
 </html>
