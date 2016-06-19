@@ -9,7 +9,6 @@ function Module(func, args, output, ui) {
 	this.output = output;
 	this.ui = ui;
 	this.update = function() {
-		console.log('module-update', this);
 		var argsValues = [];
 		if (ui) {
 			argsValues.push($('div[viewid="' + ui.id + '"]'));
