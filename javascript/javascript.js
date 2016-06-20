@@ -91,8 +91,22 @@ function initVariablecontrol() {
 			$(this).click(function() {
 				var variableid = $(this).parent().find('.variableid').val();
 				var index = getVariableIndexById(variableid);
-				variables[index].removeObserver(setVariable);
-				variables.splice(index, 1);
+				var variableIsUsed = false;
+				for (var i = 0; !variableIsUsed && i < moduleBlueprints.length; i++) {
+					for (var j = 0; !variableIsUsed && j < moduleBlueprints[i].argsVariables.length; j++) {
+						variableIsUsed = moduleBlueprints[i].argsVariables[j].variableid == variableid;
+					}
+					if (!variableIsUsed) {
+						variableIsUsed = moduleBlueprints[i].outputVariableId == variableid;
+					}
+					if (variableIsUsed) {
+						alert('The variable is still used by module "' + moduleBlueprints[i].description + '"');
+					}
+				}
+				if (!variableIsUsed) {
+					variables[index].removeObserver(setVariable);
+					variables.splice(index, 1);
+				}
 			})
 			.removeClass('new');
 			setVariable(variables[index].value);
