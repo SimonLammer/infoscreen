@@ -153,7 +153,15 @@ function initModuleEditor() {
 				if (moduleBlueprint.module) {
 					moduleBlueprint.module.disable();
 				}
-				moduleBlueprint.module = moduleBlueprint.getModule();
+				var recursive = false;
+				for (var i = 0; !recursive && i < moduleBlueprint.argsVariables.length; i++) {
+					recursive = moduleBlueprint.argsVariables[i].variableid == moduleBlueprint.outputVariableId;
+				}
+				if (recursive) {
+					alert('The output variable can not be used as input variable!');
+				} else {
+					moduleBlueprint.module = moduleBlueprint.getModule();
+				}
 			});
 		});
 	});

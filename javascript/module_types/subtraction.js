@@ -3,7 +3,7 @@ addModuleType(new ModuleType({
 	func: function(a, b) {
 		return parseFloat(a) - parseFloat(b);
 	},
-	argsdescription: ['Decimal value 1', 'Decimal value 2'],
+	argsdescription: ['Minuend [decimal]', 'Subtrahend [decimal]'],
 	usesOutputVariable: true,
 	usesUiView: false
 }));
