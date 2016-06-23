@@ -1,9 +1,9 @@
-addModuleType(new ModuleType(
-	'html',
-	function(ui, html) {
-		$(ui).html(html);
+addModuleType(new ModuleType({
+	name: 'HTML',
+	func: function(ui, value) {
+		$(ui).html(value); // update view
 	},
-	['HTML'],
-	false,
-	true
-));
+	argsdescription: ['HTML code'],
+	usesOutputVariable: false,
+	usesUiView: true
+}));
