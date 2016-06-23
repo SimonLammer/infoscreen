@@ -25,11 +25,6 @@ $(document).ready(function() {
 	var moduleBlueprint = new ModuleBlueprint('ShowText', 'html');
 	moduleBlueprint.id = getNextId();
 	moduleBlueprints.push(moduleBlueprint);
-
-	variable = new Variable(4);
-	variable.id = getNextId();
-	variable.description = 'input';
-	variables.push(variable);
 });
 
 function initPreview() {
@@ -147,7 +142,7 @@ function initModuleEditor() {
 				var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
 				var index = getModuleBlueprintIndexById(moduleBlueprintId);
 				if (moduleBlueprints[index].module) {
-					moduleBlueprints[index].module.disabledCallback();
+					moduleBlueprints[index].module.disable();
 				}
 				moduleBlueprints.splice(index, 1);
 			})

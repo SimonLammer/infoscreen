@@ -7,13 +7,17 @@ function Module(func, args, output, ui, enabledCallback, disabledCallback) {
 	this.func = func;
 	this.args = args;
 	this.output = output;
-	this.ui = $('div[viewid="' + ui.id + '"]');
-	this.enabledCallback = function() {
-		enabledCallback.call(this, this.ui);
-	};
-	this.disabledCallback = function() {
-		disabledCallback.call(this, this.ui);
-	};
+	this.ui = (ui ? $('div[viewid="' + ui.id + '"]') : null);
+	this.enabledCallback = enabledCallback ?
+		function() {
+			enabledCallback.call(this, this.ui);
+		}
+		: null;
+	this.disabledCallback = disabledCallback ? 
+		function() {
+			disabledCallback.call(this, this.ui);
+		}
+		: null;
 	this.update = function() {
 		var argsValues = [];
 		if (this.ui) {
@@ -42,14 +46,18 @@ function Module(func, args, output, ui, enabledCallback, disabledCallback) {
 			args[i].addObserver(callback);
 		}
 		this.enabled = true;
-		this.enabledCallback();
+		if (this.enabledCallback) {
+			this.enabledCallback();
+		}
 		this.update();
 	};
 	this.disable = function() {
 		if (!this.enabled) {
 			return;
 		}
-		this.disabledCallback();
+		if (this.disabledCallback) {
+			this.disabledCallback();
+		}
 		for (var i = 0; i < args.length; i++) {
 			args[i].removeObserver(callback);
 		}
