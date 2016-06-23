@@ -25,6 +25,11 @@ $(document).ready(function() {
 	var moduleBlueprint = new ModuleBlueprint('ShowText', 'html');
 	moduleBlueprint.id = getNextId();
 	moduleBlueprints.push(moduleBlueprint);
+
+	variable = new Variable(4);
+	variable.id = getNextId();
+	variable.description = 'input';
+	variables.push(variable);
 });
 
 function initPreview() {
@@ -140,7 +145,11 @@ function initModuleEditor() {
 		$('#moduleblueprintslist button.new').each(function(e) {
 			$(this).click(function() {
 				var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
-				moduleBlueprints.splice(getModuleBlueprintIndexById(moduleBlueprintId), 1);
+				var index = getModuleBlueprintIndexById(moduleBlueprintId);
+				if (moduleBlueprints[index].module) {
+					moduleBlueprints[index].module.disabledCallback();
+				}
+				moduleBlueprints.splice(index, 1);
 			})
 			.removeClass('new');
 			$(this).parent().parent().find('button.updatemodule').click(function() {
