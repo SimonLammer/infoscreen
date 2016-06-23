@@ -1,9 +1,9 @@
-addModuleType(new ModuleType(
-	'add',
-	function(a,b) {
+addModuleType(new ModuleType({
+	name: 'Addition',
+	func: function(a, b) {
 		return parseFloat(a) + parseFloat(b);
 	},
-	['Operand 1', 'Operand 2'],
-	true,
-	false
-));
+	argsdescription: ['Decimal value 1', 'Decimal value 2'],
+	usesOutputVariable: true,
+	usesUiView: false
+}));

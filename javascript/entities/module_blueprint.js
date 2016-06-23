@@ -47,7 +47,7 @@ ModuleBlueprint.prototype.getModule = function() {
 	}
 	var output = getVariableById(this.outputVariableId);
 	var ui = getViewById(this.uiViewId);
-	return new Module(moduleType.func, args, output, ui);
+	return new Module(moduleType.func, args, output, ui, moduleType.enabledCallback, moduleType.disabledCallback);
 };
 
 function getModuleTypeByName(moduleTypeName) {

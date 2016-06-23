@@ -140,7 +140,11 @@ function initModuleEditor() {
 		$('#moduleblueprintslist button.new').each(function(e) {
 			$(this).click(function() {
 				var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
-				moduleBlueprints.splice(getModuleBlueprintIndexById(moduleBlueprintId), 1);
+				var index = getModuleBlueprintIndexById(moduleBlueprintId);
+				if (moduleBlueprints[index].module) {
+					moduleBlueprints[index].module.disable();
+				}
+				moduleBlueprints.splice(index, 1);
 			})
 			.removeClass('new');
 			$(this).parent().parent().find('button.updatemodule').click(function() {
