@@ -13,6 +13,7 @@ $(document).ready(function() {
 	initViewcontrol();
 	initVariablecontrol();
 	initModuleEditor();
+	initExporter();
 	
 	// generate Hello World
 	var view = new View()
@@ -169,6 +170,49 @@ function initModuleEditor() {
 		var moduleBlueprint = new ModuleBlueprint('', '');
 		moduleBlueprint.id = getNextId();
 		moduleBlueprints.push(moduleBlueprint);
+	});
+}
+
+function initExporter() {
+	$('#button-export').click(function() {
+		var data = {
+			views: [],
+			variables: [],
+			modules: []
+		};
+		for (var i = 0; i < views.length; i++) {
+			data.views[i] = {
+				id: views[i].id,
+				verticalAlignOrientation: views[i].verticalAlign.orientation,
+				verticalAlignDistance: views[i].verticalAlign.distance,
+				horizontalAlignOrientation: views[i].verticalAlign.orientation,
+				horizontalAlignDistance: views[i].verticalAlign.distance,
+				height: views[i].height,
+				width: views[i].width,
+				zindex: views[i].zindex
+			};
+		}
+		for (var i = 0; i < variables.length; i++) {
+			data.variables[i] = {
+				id: variables[i].id,
+				value: variables[i].value
+			};
+		}
+		for (var i = 0; i < moduleBlueprints.length; i++) {
+			if (moduleBlueprints[i].module) {
+				data.modules[i] = {
+					id: moduleBlueprints[i].id,
+					moduleTypeName: moduleBlueprints[i].moduleTypeName,
+					inputVariablesIds: [],
+					outputVariableId: moduleBlueprints[i].outputVariableId,
+					uiViewId: moduleBlueprints[i].uiViewId
+				};
+				for (var j = 0; j < moduleBlueprints[i].argsVariables.length; j++) {
+					data.modules[i].inputVariablesIds[j] = moduleBlueprints[i].argsVariables[j].variableid;
+				}
+			}
+		}
+		$('#exported').html(JSON.stringify(data));
 	});
 }
 
