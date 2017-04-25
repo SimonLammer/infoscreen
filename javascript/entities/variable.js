@@ -4,16 +4,6 @@ function Variable(defaultValue) {
 	this.observers = [];
 	this.value = defaultValue;
 }
-/*
-callback example1: 
-function (newValue, oldValue) {
-	console.log('the value changed from', oldValue, 'to', newValue);
-}
-callback example2:
-function (newValue) {
-	console.log('the variable changed to', newValue);
-}
-*/
 Variable.prototype.addObserver = function(callback) {
 	this.observers.push(callback);
 };

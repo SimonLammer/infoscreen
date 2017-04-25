@@ -1,39 +1,30 @@
 /*
-args has to be an array of Variable instances!
-output has to be a Variable instance!
-ui has to be a View instance!
+	moduleTypeName = getModuleTypeByName('Addition')
+	args = {summand1: 1}
+	vars = {summand2: 2} // variable with id 2
+	outputs = {sum: 3} // variable with id 3
 */
-function Module(func, args, output, ui, enabledCallback, disabledCallback) {
-	this.func = func;
+function Module(moduleType, args, vars, outputs) {
+	this.moduleType = moduleType;
 	this.args = args;
-	this.output = output;
-	this.ui = (ui ? $('div[viewid="' + ui.id + '"]') : null);
-	this.enabledCallback = enabledCallback ?
-		function() {
-			enabledCallback.call(this, this.ui);
-		}
-		: null;
-	this.disabledCallback = disabledCallback ? 
-		function() {
-			disabledCallback.call(this, this.ui);
-		}
-		: null;
+	this.vars = vars;
+	this.outputs = outputs;
 	this.update = function() {
-		var argsValues = [];
-		if (this.ui) {
-			argsValues.push(this.ui);
+		var inputs = {};
+		for (var arg in args) {
+			inputs[arg] = args[arg];
 		}
-		for (var i = 0; i < args.length; i++) {
-			argsValues.push(this.args[i].value);
+		for (var variable in vars) {
+			inputs[variable] = vars[variable];
 		}
-		var result = func.apply(this, argsValues);
-		if (this.output) {
-			this.output.setValue(result);
+		var outputs = this.moduleType.func.apply(this, inputs);
+		for (var output in outputs) {
+			this.outputs[output].setValue(outputs[output]);
 		}
-		return result;
+		return outputs;
 	};
 
-	var self = this; // keep a reference to this, because the context of the callback function will be the variable - not the module!
+	var self = this;
 	var callback = function() {
 		self.update.call(self);
 	};
@@ -42,12 +33,12 @@ function Module(func, args, output, ui, enabledCallback, disabledCallback) {
 		if (this.enabled) {
 			return;
 		}
-		for (var i = 0; i < args.length; i++) {
-			args[i].addObserver(callback);
+		for (var i = 0; i < vars.length; i++) {
+			vars[i].addObserver(callback);
 		}
 		this.enabled = true;
 		if (this.enabledCallback) {
-			this.enabledCallback();
+			this.prepare();
 		}
 		this.update();
 	};

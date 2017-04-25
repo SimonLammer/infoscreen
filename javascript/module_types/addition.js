@@ -1,9 +1,17 @@
 addModuleType(new ModuleType({
 	name: 'Addition',
-	func: function(a, b) {
-		return parseFloat(a) + parseFloat(b);
+	inputs: {
+		summand1: 'Summand 1 [decimal]',
+		summand2: 'Summand 2 [decimal]'
 	},
-	argsdescription: ['Summand 1 [decimal]', 'Summand 2 [decimal]'],
-	usesOutputVariable: true,
-	usesUiView: false
+	outputs: {
+		sum: 'Sum [decimal]'
+	},
+	isView: false,
+	prepare: function(inputs) {},
+	func: function(inputs) {
+		return {
+			sum: parseFloat(inputs.summand1) + parseFloat(inputs.summand2)
+		};
+	}
 }));
