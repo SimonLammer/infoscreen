@@ -127,7 +127,14 @@ var app = new Vue({
     el: '#app',
     data: {
         bus: bus, // set event bus
-        currentView: pages[0].name
+        currentView: (function() {
+            var match = window.location.search.match(/page=([^&]+)/);
+            if (match) {
+                return match[1];
+            } else {
+                return pages[0].name;
+            }
+        })()
     },
     components: (function() {
         var components = {};
