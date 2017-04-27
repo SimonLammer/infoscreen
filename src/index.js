@@ -33,7 +33,7 @@ Object.defineProperty(Vue.prototype, '$bus', {
     }
 });
 // create event bus
-var bus = new Vue({})
+var bus = new Vue({});
 
 var app = new Vue({
   el: '#app',
