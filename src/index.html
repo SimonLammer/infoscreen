@@ -19,7 +19,9 @@
 		<div id="navbar">
 			<navbar></navbar>
 		</div>
-		<main_content id="page" v-bind:is="currentView" ></main_content>
+		<div id="page">
+			<main_content v-bind:is="currentView" ></main_content>
+		</div>
 	</div>
 	
 	<!-- Scripts -->
