@@ -105,6 +105,7 @@ Vue.component('my-menu', {
         gotoPage: function(e, pageName) {
             e.preventDefault();
             gotoPage(pageName);
+            $('#menu-wrapper').removeClass('show');
         }
     },
     data: function() {
@@ -154,4 +155,7 @@ var app = new Vue({
 
 function gotoPage(pageName) {
     app.currentView = pageName;
+    var match = window.location.toString().match(/(^[^?]*\?((?!page)[^=]+=[^&]+&?)*page=)([^&]*)(.*)/);
+    var newUrl = match[1] + pageName + match[4];
+    window.history.pushState(null, '', newUrl);
 }

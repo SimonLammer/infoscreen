@@ -48,8 +48,6 @@
 	z-index: -1;
 	display: none;
 	opacity: 0;
-
-	transition: opacity 75ms;
 }
 
 #menu-wrapper.show {
