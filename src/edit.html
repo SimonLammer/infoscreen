@@ -11,202 +11,20 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="https://code.jquery.com/ui/jquery-ui-git.css" />
 	<link rel="stylesheet" href="style/edit.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
 <body>
-	<nav class="navbar navbar-default navbar-static-top">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="">Infoscreen-Editor</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li>
-						<a href="#preview">Preview</a>
-					</li>
-					<li>
-						<a href="#view-editor">View Editor</a>
-					</li>
-					<li>
-						<a href="#module-editor">Module Editor</a>
-					</li>
-					<li>
-						<a href="#export">Exporter</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-	<div id="preview">
-		<div id="previewviews">
-			<div rv-viewid="view.id" rv-each-view="viewslist">
-				{view.name}
-			</div>
-		</div>
-	</div>
-	
-	<div id="controls">
-		<!-- Preview controls -->
-		<div>
-			<b>Preview:</b>
-			<table id="previewcontrol">
-				<thead>
-					<th>Width</th>
-					<th>Height</th>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<input name="width" id="previewwidth" type="text" value="800px" rv-value="width" />
-						</td>
-						<td>
-							<input name="width" id="previewheight" type="text" value="300px" rv-value="height" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<hr />
-
-		<div id="view-editor">
-			<b>Views:</b> <button id="button-add_view">Add View</button>
-			<table id="viewcontrol">
-				<thead>
-					<th></th>
-					<th>Name</th>
-					<th>Vertical Align</th>
-					<th>Horizontal Align</th>
-					<th>Width</th>
-					<th>Height</th>
-					<th>Z-Index</th>
-				</thead>
-				<tbody id="viewslist" >
-					<tr rv-each-view="viewslist" class="ui-state-default">
-						<td>
-							<input type="hidden" class="viewid" rv-value="view.id" />
-							<button class="new">X</button>
-						</td>
-						<td><input type="text" rv-value="view.name" rv-on-keyup="updatePreview" /></td>
-						<td>
-							<select rv-value="view.verticalAlign.orientation" rv-on-change="updatePreview" >
-								<option rv-value="alignorientation" rv-each-alignorientation="verticalalignorientations">{ alignorientation }</option>
-							</select>
-							<input type="text" rv-value="view.verticalAlign.distance" rv-on-keyup="updatePreview" />
-						</td>
-						<td>
-							<select rv-value="view.horizontalAlign.orientation" rv-on-change="updatePreview" >
-								<option rv-value="alignorientation" rv-each-alignorientation="horizontalalignorientations">{ alignorientation }</option>
-							</select>
-							<input type="text" rv-value="view.horizontalAlign.distance" rv-on-keyup="updatePreview" />
-						</td>
-						<td><input type="text" rv-value="view.width" rv-on-keyup="updatePreview" /></td>
-						<td><input type="text" rv-value="view.height" rv-on-keyup="updatePreview" /></td>
-						<td><input type="text" rv-value="view.zindex" rv-on-keyup="updatePreview" /></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<hr />
-
-		<div id="variables-editor">
-			<b>Variables:</b> <button id="button-add_variable">Add Variable</button>
-			<table id="variablecontrol">
-				<thead>
-					<th></th>
-					<th>Description</th>
-					<th>Value</th>
-				</thead>
-				<tbody id="variableslist">
-					<tr rv-each-variable="variableslist" class="ui-state-default">
-						<td>
-							<input type="hidden" class="variableid" rv-value="variable.id" />
-							<button class="new">X</button>
-						</td>
-						<td>
-							<input type="text" rv-value="variable.description" />
-						</td>
-						<td>
-							<input type="text" class="variablevalue" />
-							<button class="setvariable">Set new Value</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<hr />
-
-		<div id="module-editor">
-			<b>Modules:</b> <button id="button-add_module">Add Module</button>
-			<table id="modulecontrol">
-				<thead>
-					<th></th>
-					<th>Name</th>
-					<th>ModuleType</th>
-					<th>Arguments</th>
-					<th>Output</th>
-					<th>View</th>
-					<th></th>
-				</thead>
-				<tbody id="moduleblueprintslist">
-					<tr rv-each-moduleblueprint="moduleblueprintslist" class="ui-state-default">
-						<td>
-							<input type="hidden" class="moduleblueprintid" rv-value="moduleblueprint.id" />
-							<button class="new">X</button>
-						</td>
-						<td><input type="text" rv-value="moduleblueprint.description" /></td>
-						<td>
-							<select rv-value="moduleblueprint.moduleTypeName" rv-on-change="updatemoduletype">
-								<option rv-value="moduletype.name" rv-each-moduletype="moduletypeslist">{ moduletype.name }</option>
-							</select>
-						</td>
-						<td>
-							<ul>
-								<li rv-each-arg="moduleblueprint.argsVariables">
-									{ arg.description }
-									<select rv-value="arg.variableid">
-										<option rv-value="variable.id" rv-each-variable="variableslist">{ variable.description }</option>
-									</select>
-								</li>
-							</ul>
-						</td>
-						<td>
-							<select rv-value="moduleblueprint.outputVariableId" rv-if="moduleblueprint.usesOutputVariable" rv-on-change="updateoutputvariable">
-								<option rv-value="variable.id" rv-each-variable="variableslist">{ variable.description }</option>
-							</select>
-							<p rv-unless="moduleblueprint.usesOutputVariable">
-								----
-							</p>
-						</td>
-						<td>
-							<select rv-value="moduleblueprint.uiViewId" rv-if="moduleblueprint.usesUiView">
-								<option rv-value="view.id" rv-each-view="viewslist">{ view.name }</option>
-							</select>
-							<p rv-unless="moduleblueprint.usesUiView">
-								----
-							</p>
-						</td>
-						<td>
-							<button class="updatemodule">Update Module</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<hr />
-
-		<div id="exporter">
-			<b>Exporter:</b> <button id="button-export">Export</button>
-			<pre><code id="exported"></code></pre>
-		</div>
+	<div id="app">
+		<navbar></navbar>
+		<main_content v-bind:is="currentView" ></main_content>
 	</div>
 	
 	<!-- Scripts -->
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> <!-- JQuery v2.2.4 -->
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script> <!-- JQuery UI v1.11.4 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> <!-- Bootstrap -->
+	<script src="https://unpkg.com/vue@2.3.0"></script> <!-- Vue -->
 	<script src="https://rawgit.com/mikeric/rivets/v0.8.0/dist/rivets.bundled.min.js"></script> <!-- Rivets.js + Sightglass.js v0.8.0 -->
 	<script src="entities/align.js"></script>
 	<script src="entities/view.js"></script>
