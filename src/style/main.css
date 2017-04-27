@@ -46,17 +46,27 @@
 
 #menu-wrapper {
 	z-index: -1;
+	display: none;
+	opacity: 0;
+
+	transition: opacity 75ms;
+}
+
+#menu-wrapper.show {
+	display: block;
+	opacity: 1;
 }
 
 #menu {
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.25);
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
 #menu-content {
 	padding: 5px;
 
+	z-index: 1;
 	display: inline-block;
 	background-color: #fff;
 }

@@ -43,19 +43,24 @@ Vue.component('navbar', {
     <div>
         <ul id="navbar">
             <li>
-                <span class="glyphicon glyphicon-menu-hamburger"></span>
+                <span class="glyphicon glyphicon-menu-hamburger" v-on:click="toggleMenu"></span>
             </li>
             <li v-for="item in menuItems">
                 <span v-bind:class="item.class" v-on:click="item.click"></span>
             </li>
         </ul>
         <div id="menu-wrapper">
-            <div id="menu">
+            <div id="menu" v-on:click="toggleMenu">
                 <my-menu />
             </div>
         </div>
     </div>
     `,
+    methods: {
+        toggleMenu: function() {
+            $('#menu-wrapper').toggleClass('show');
+        }
+    },
     data: function() {
         return {
             menuItems: [
@@ -84,7 +89,7 @@ Vue.component('navbar', {
 
 Vue.component('my-menu', {
     template: `
-    <div id="menu-content">
+    <div id="menu-content" v-on:click="$event.stopPropagation()">
         <h1>Pages:</h1>
         <ul>
             <li v-for="page in pages">
