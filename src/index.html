@@ -10,14 +10,14 @@
 	<link rel="stylesheet" href="style/normalize-4_1_1.css" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="https://code.jquery.com/ui/jquery-ui-git.css" />
-	<link rel="stylesheet" href="style/edit.css" />
+	<link rel="stylesheet" href="style/main.css" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
 <body>
 	<div id="app">
-		<navbar></navbar>
-		<main_content v-bind:is="currentView" ></main_content>
+		<navbar id="navbar"></navbar>
+		<main_content id="page" v-bind:is="currentView" ></main_content>
 	</div>
 	
 	<!-- Scripts -->
