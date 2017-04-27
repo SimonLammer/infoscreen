@@ -1,10 +1,11 @@
 /*
-	moduleTypeName = getModuleTypeByName('Addition')
+	moduleType = getModuleTypeByName('Addition')
 	args = {summand1: 1}
 	vars = {summand2: 2} // variable with id 2
 	outputs = {sum: 3} // variable with id 3
 */
 function Module(moduleType, args, vars, outputs) {
+	this.id = getNextId();
 	this.moduleType = moduleType;
 	this.args = args;
 	this.vars = vars;

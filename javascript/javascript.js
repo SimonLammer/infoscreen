@@ -3,7 +3,10 @@ window.previewSettings = {
 	'height': '300px',
 	'show_modules': false
 };
-window.moduleBlueprints = [];
+
+window.modules = [];
+window.variables = [];
+window.container = [];
 
 $(document).ready(function() {
 	sightglass.adapters = rivets.adapters;
@@ -16,16 +19,11 @@ $(document).ready(function() {
 	initExporter();
 	
 	// generate Hello World
-	var view = new View()
+	/*var view = new View()
 	view.id = getNextId();
-	views.push(view);
-	var variable = new Variable('Hello World!');
-	variable.id = getNextId();
-	variable.description = 'Text';
-	variables.push(variable);
-	var moduleBlueprint = new ModuleBlueprint('ShowText', 'html');
-	moduleBlueprint.id = getNextId();
-	moduleBlueprints.push(moduleBlueprint);
+	views.push(view);*/
+	variables.push(new Variable('Text', 'Hello World!'));
+	container.push(new Container('ShowText', {x=0,y=0}, {width=200,height=100},0));
 });
 
 function initPreview() {
@@ -44,17 +42,15 @@ function initPreviewcontrol() {
 
 function initViewcontrol() {
 	rivets.bind($('#viewcontrol'), {
-		'viewslist': views,
+		'viewslist': container,
 		'verticalalignorientations': alignOrientations.vertical,
 		'horizontalalignorientations': alignOrientations.horizontal,
 		'updatePreview': refreshPreview
 	});
 	$('#button-add_view').click(function() {
-		var view = new View();
-		view.id = getNextId();
-		views.push(view);
+		container.push(new Container('New Container', {x=0,y=0},{width=200,height=100},0));
 	});
-	sightglass({data: views}, 'data', function() {
+	sightglass({data: container}, 'data', function() {
 		$('#viewslist button.new').each(function(e) {
 			$(this).click(function() {
 				var viewid = $(this).parent().find('.viewid').val();
@@ -117,42 +113,42 @@ function initVariablecontrol() {
 
 function initModuleEditor() {
 	rivets.bind($('#modulecontrol'), {
-		'moduleblueprintslist': moduleBlueprints,
+		'moduleblueprintslist': modules,
 		'moduletypeslist': moduleTypes,
 		'variableslist': variables,
 		'viewslist': views,
 		'updatemoduletype': function() {
 			var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
 			var index = getModuleBlueprintIndexById(moduleBlueprintId);
-			moduleBlueprints[index].updateModuleType();
+			modules[index].updateModuleType();
 		},
 		'updateoutputvariable': function() {
 			var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
 			var index = getModuleBlueprintIndexById(moduleBlueprintId);
-			moduleBlueprints[index].updateOutputVariable();
+			modules[index].updateOutputVariable();
 		},
 		'updateuiview': function() {
 			var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
 			var index = getModuleBlueprintIndexById(moduleBlueprintId);
-			moduleBlueprints[index].updateUiView();
+			modules[index].updateUiView();
 		}
 	});
-	sightglass({data: moduleBlueprints}, 'data', function() {
+	sightglass({data: modules}, 'data', function() {
 		$('#moduleblueprintslist button.new').each(function(e) {
 			$(this).click(function() {
 				var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
 				var index = getModuleBlueprintIndexById(moduleBlueprintId);
-				if (moduleBlueprints[index].module) {
-					moduleBlueprints[index].module.disable();
+				if (modules[index]) {
+					modules[index].disable();
 				}
-				moduleBlueprints.splice(index, 1);
+				modules.splice(index, 1);
 			})
 			.removeClass('new');
 			$(this).parent().parent().find('button.updatemodule').click(function() {
 				var moduleBlueprintId = $(this).parent().parent().find('.moduleblueprintid').val();
-				var moduleBlueprint = moduleBlueprints[getModuleBlueprintIndexById(moduleBlueprintId)];
-				if (moduleBlueprint.module) {
-					moduleBlueprint.module.disable();
+				var moduleBlueprint = modules[getModuleBlueprintIndexById(moduleBlueprintId)];
+				if (moduleBlueprint) {
+					moduleBlueprint.disable();
 				}
 				var recursive = false;
 				for (var i = 0; !recursive && i < moduleBlueprint.argsVariables.length; i++) {
@@ -167,9 +163,7 @@ function initModuleEditor() {
 		});
 	});
 	$('#button-add_module').click(function() {
-		var moduleBlueprint = new ModuleBlueprint('', '');
-		moduleBlueprint.id = getNextId();
-		moduleBlueprints.push(moduleBlueprint);
+		modules.push(new Module(null, {},{},{}));
 	});
 }
 
@@ -183,13 +177,13 @@ function initExporter() {
 		for (var i = 0; i < views.length; i++) {
 			data.views[i] = {
 				id: views[i].id,
-				verticalAlignOrientation: views[i].verticalAlign.orientation,
-				verticalAlignDistance: views[i].verticalAlign.distance,
-				horizontalAlignOrientation: views[i].verticalAlign.orientation,
-				horizontalAlignDistance: views[i].verticalAlign.distance,
-				height: views[i].height,
-				width: views[i].width,
-				zindex: views[i].zindex
+				verticalAlignOrientation: container[i].verticalAlign.orientation,
+				verticalAlignDistance: container[i].verticalAlign.distance,
+				horizontalAlignOrientation: container[i].verticalAlign.orientation,
+				horizontalAlignDistance: container[i].verticalAlign.distance,
+				height: container[i].height,
+				width: container[i].width,
+				zindex: container[i].zindex
 			};
 		}
 		for (var i = 0; i < variables.length; i++) {
@@ -198,17 +192,17 @@ function initExporter() {
 				value: variables[i].value
 			};
 		}
-		for (var i = 0; i < moduleBlueprints.length; i++) {
-			if (moduleBlueprints[i].module) {
+		for (var i = 0; i < modules.length; i++) {
+			if (modules[i].module) {
 				data.modules[i] = {
-					id: moduleBlueprints[i].id,
-					moduleTypeName: moduleBlueprints[i].moduleTypeName,
+					id: modules[i].id,
+					moduleTypeName: modules[i].moduleTypeName,
 					inputVariablesIds: [],
-					outputVariableId: moduleBlueprints[i].outputVariableId,
-					uiViewId: moduleBlueprints[i].uiViewId
+					outputVariableId: modules[i].outputVariableId,
+					uiViewId: modules[i].uiViewId
 				};
-				for (var j = 0; j < moduleBlueprints[i].argsVariables.length; j++) {
-					data.modules[i].inputVariablesIds[j] = moduleBlueprints[i].argsVariables[j].variableid;
+				for (var j = 0; j < modules[i].argsVariables.length; j++) {
+					data.modules[i].inputVariablesIds[j] = modules[i].argsVariables[j].variableid;
 				}
 			}
 		}

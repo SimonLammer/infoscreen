@@ -1,8 +1,8 @@
-window.variables = [];
-
-function Variable(defaultValue) {
+function Variable(name, defaultValue) {
 	this.observers = [];
+	this.name = name;
 	this.value = defaultValue;
+	this.id = getNextId();
 }
 Variable.prototype.addObserver = function(callback) {
 	this.observers.push(callback);

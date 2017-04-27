@@ -1,6 +1,5 @@
-window.container = [];
 function Container(name, position, size, zindex) {
-	this.id = 0; //TODO
+	this.id = getNextId();
 	this.name = name;
 	this.position = position;
 	this.size = size;
