@@ -1,43 +1,76 @@
-var home = {
-    template: '<h1>home</h1>'    
-};
-
-var editor = {
-    template: `
-    <div>
-        <div  style="background-color: #567;">
-        <div id="preview" />
-        <div id="viewProperties" />
-        <div id="right">
-            <div id="controls" />
-            <div id="navigation" />
-            <div id="containerProperties" />
-        </div>
-        asdf
-        </div>
-    </div>`
-};
+var pages = [
+    {
+        name: 'Home',
+        vueConfig: {
+                template: `
+                <div id="home">
+                    <h1>Home</h1>
+                    <ul>
+                        <li v-for="page in pages">
+                            {{ page.name }}
+                        </li>
+                    </ul>
+                </div>`,
+                data: function() {
+                    return {
+                        pages: pages
+                    };
+                }  
+        }
+    },
+    {
+        name: 'Editor',
+        vueConfig: {
+            template: `
+            <div id="editor">
+                <div style="background-color: #567;">
+                <div id="preview" />
+                <div id="viewProperties" />
+                <div id="right">
+                    <div id="controls" />
+                    <div id="navigation" />
+                    <div id="containerProperties" />
+                </div>
+                asdf
+                </div>
+            </div>`
+        }
+    }
+];
 
 Vue.component('navbar', {
     template: `
-    <ul>
-        <li>
-            <span class="glyphicon glyphicon-menu-hamburger"></span>
-        </li>
-        <li v-for="item in menuItems">
-            <span v-bind:class="item.class"></span>
-        </li>
-    </ul>
+    <div>
+        <ul id="navbar">
+            <li>
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </li>
+            <li v-for="item in menuItems">
+                <span v-bind:class="item.class" v-on:click="item.click"></span>
+            </li>
+        </ul>
+        <div id="menu-wrapper">
+            <div id="menu">
+                <my-menu />
+            </div>
+        </div>
+    </div>
     `,
     data: function() {
         return {
             menuItems: [
                 {
                     class: "glyphicon glyphicon-sunglasses",
-                    text: "Menu item 1 text"
+                    text: "Menu item 1 text",
+                    click: function() {
+                        alert('1');
+                    }
                 },{
                     class: "glyphicon glyphicon-scissors",
-                    text: "Menu item 2 text"
+                    text: "Menu item 2 text",
+                    click: function() {
+                        alert('2');
+                    }
                 },
             ]
         };
@@ -46,6 +79,33 @@ Vue.component('navbar', {
         this.$bus.$on('contentChanged', event => {
             alert(event.newContent);
         });
+    }
+});
+
+Vue.component('my-menu', {
+    template: `
+    <div id="menu-content">
+        <h1>Pages:</h1>
+        <ul>
+            <li v-for="page in pages">
+                <a 
+                    v-bind:href="'?page=' + page.name"
+                    v-on:click="gotoPage($event, page.name)">
+                        {{ page.name }}
+                </a>
+            </li>
+        </ul>
+    </div>`,
+    methods: {
+        gotoPage: function(e, pageName) {
+            e.preventDefault();
+            gotoPage(pageName);
+        }
+    },
+    data: function() {
+        return {
+            pages: pages
+        };
     }
 });
 
@@ -59,20 +119,27 @@ Object.defineProperty(Vue.prototype, '$bus', {
 var bus = new Vue({})
 
 var app = new Vue({
-  el: '#app',
-  data: {
-      bus: bus, // set event bus
-      currentView: 'home'
-  },
-  components:{
-      home: home,
-      editor: editor
-  },
-  watch:{
-      currentView: function(newValue){
-          this.$bus.$emit('contentChanged', {
-            newContent: newValue
-          });
-      }
-  }
+    el: '#app',
+    data: {
+        bus: bus, // set event bus
+        currentView: pages[0].name
+    },
+    components: (function() {
+        var components = {};
+        pages.forEach(function(page) {
+            components[page.name] = page.vueConfig;
+        });
+        return components;
+    })(),
+    watch: {
+        currentView: function(newValue){
+            this.$bus.$emit('contentChanged', {
+                newContent: newValue
+            });
+        }
+    }
 });
+
+function gotoPage(pageName) {
+    app.currentView = pageName;
+}

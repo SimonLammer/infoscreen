@@ -6,26 +6,27 @@
 	height: 100%;
 }
 
-#navbar, #page {
+#sidebar, #page {
 	border: 2px solid #d8d8d8;
 }
 
-#navbar {
+#sidebar {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 4em;
+	width: 3.5em;
 	height: 100%;
 	margin: 0;
 	border-top: none;
 	border-bottom: none;
 	border-left: none;
 	padding: 5px;
+	z-index: 1;
 
 	background-color: #f8f8f8;
 }
 
-#page {
+#page, #menu-wrapper {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -36,12 +37,32 @@
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
-	padding: 0 0 0 4em;
+	padding: 0 0 0 3.5em;
+}
+
+#page {
+	z-index: 0;
+}
+
+#menu-wrapper {
+	z-index: -1;
+}
+
+#menu {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+#menu-content {
+	padding: 5px;
+
+	display: inline-block;
+	background-color: #fff;
 }
 
 
-
-#navbar > ul {
+#navbar {
 	margin: 0;
 	border: none;
 	padding: 0;
@@ -49,12 +70,12 @@
 	list-style-type: none;
 	text-align: center;
 }
-#navbar > ul > li {
+#navbar > li {
 	text-align: center;
 }
-#navbar > ul > li > span {
-	font-size: 2.5em;
+#navbar > li > span {
+	font-size: 1.75em;
 }
-#navbar > ul > li:first-child > span {
-	font-size: 3em;
+#navbar > li:first-child > span {
+	font-size: 2.5em;
 }
