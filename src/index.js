@@ -5,8 +5,13 @@ var home = {
 var editor = {
     template: `
     <div>
-        <h2>hi</h2>
-        <h1>ediddr</h1>
+        <div id="preview" />
+        <div id="viewProperties" />
+        <div id="right">
+            <div id="controls" />
+            <div id="navigation" />
+            <div id="containerProperties" />
+        </div>
     </div>`
 };
 
@@ -20,7 +25,6 @@ Vue.component('navbar', {
         });
     }
 });
-Vue.component('main_content', {});
 
 // define global event bus
 Object.defineProperty(Vue.prototype, '$bus', {
