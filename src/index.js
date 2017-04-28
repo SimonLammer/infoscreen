@@ -35,8 +35,8 @@ var app = new Vue({
 
 function gotoPage(pageName) {
     app.currentView = pageName;
-    var match = window.location.toString().match(/(^[^?]*\?((?!page)[^=]+=[^&]+&?)*page=)([^&]*)(.*)/);
-    var newUrl = match[1] + pageName + match[4];
+    var match = window.location.toString().match(/(^[^?]*)\??(((?!page)[^=]+=[^&]+&?)*)(page=)?([^&]*)(.*)/);
+    var newUrl = match[1] + '?' + match[2] + 'page=' + pageName + match[6];
     window.history.pushState(null, '', newUrl);
 }
 
