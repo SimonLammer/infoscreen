@@ -2,21 +2,30 @@ var pages = [
     {
         name: 'Home',
         vueConfig: {
-                template: `
-                <div id="home">
-                    <h1>Home</h1>
-                    <ul>
-                        <li v-for="page in pages">
-                            {{ page.name }}
-                        </li>
-                    </ul>
-                </div>`,
-                data: function() {
-                    return {
-                        pages: pages
-                    };
-                }  
-        }
+            template: `
+            <div id="home">
+                <h1>Home</h1>
+                <ul>
+                    <li v-for="page in pages">
+                        {{ page.name }}
+                    </li>
+                </ul>
+            </div>`,
+            data: function() {
+                return {
+                    pages: pages
+                };
+            }  
+        },
+        navbarItems: [
+            {
+                class: "glyphicon glyphicon-alert",
+                text: "View on GitHub",
+                click: function() {
+                    alert('1');
+                }
+            }
+        ]
     },
     {
         name: 'Editor',
@@ -34,10 +43,14 @@ var pages = [
                 asdf
                 </div>
             </div>`
-        }
+        },
+        navbarItems: []
     }
 ];
 
+var navbarItemsWrapper = {
+    navbarItems: []
+};
 Vue.component('navbar', {
     template: `
     <div>
@@ -45,7 +58,7 @@ Vue.component('navbar', {
             <li>
                 <span class="glyphicon glyphicon-menu-hamburger" v-on:click="toggleMenu"></span>
             </li>
-            <li v-for="item in menuItems">
+            <li v-for="item in navbarItems">
                 <span v-bind:class="item.class" v-on:click="item.click"></span>
             </li>
         </ul>
@@ -62,30 +75,19 @@ Vue.component('navbar', {
         }
     },
     data: function() {
-        return {
-            menuItems: [
-                {
-                    class: "glyphicon glyphicon-sunglasses",
-                    text: "Menu item 1 text",
-                    click: function() {
-                        alert('1');
-                    }
-                },{
-                    class: "glyphicon glyphicon-scissors",
-                    text: "Menu item 2 text",
-                    click: function() {
-                        alert('2');
-                    }
-                },
-            ]
-        };
+        return navbarItemsWrapper;
     },
-    mounted() {
-        this.$bus.$on('contentChanged', event => {
-            alert(event.newContent);
+    mounted: function() {
+        this.$bus.$on('pageChanged', function() {
+            var currentPageNavbarItems = getCurrentPage().navbarItems;
+            if (!currentPageNavbarItems) {
+                currentPageNavbarItems = [];
+            }
+            navbarItemsWrapper.navbarItems = currentPageNavbarItems;
         });
     }
 });
+
 
 Vue.component('my-menu', {
     template: `
@@ -128,14 +130,7 @@ var app = new Vue({
     el: '#app',
     data: {
         bus: bus, // set event bus
-        currentView: (function() {
-            var match = window.location.search.match(/page=([^&]+)/);
-            if (match) {
-                return match[1];
-            } else {
-                return pages[0].name;
-            }
-        })()
+        currentView: ''
     },
     components: (function() {
         var components = {};
@@ -146,10 +141,20 @@ var app = new Vue({
     })(),
     watch: {
         currentView: function(newValue){
-            this.$bus.$emit('contentChanged', {
-                newContent: newValue
+            this.$bus.$emit('pageChanged', {
+                newPage: newValue
             });
         }
+    },
+    mounted: function() {
+        this.currentView = (function() {
+            var match = window.location.search.match(/page=([^&]+)/);
+            if (match) {
+                return match[1];
+            } else {
+                return pages[0].name;
+            }
+        })();
     }
 });
 
@@ -158,4 +163,22 @@ function gotoPage(pageName) {
     var match = window.location.toString().match(/(^[^?]*\?((?!page)[^=]+=[^&]+&?)*page=)([^&]*)(.*)/);
     var newUrl = match[1] + pageName + match[4];
     window.history.pushState(null, '', newUrl);
+}
+
+function getCurrentPage() {
+    if (app) {
+        var p = pages.filter(function(page) {
+            return page.name == app.currentView;
+        });
+        if (p.length != 1) {
+            console.log(app.currentView, pages.map(function(page) {
+                return page.name;
+            }));
+            throw 'Invalid current page!';
+        }
+        return p[0];
+    } else {
+        console.log('No current page', app);
+        return {};
+    }
 }
