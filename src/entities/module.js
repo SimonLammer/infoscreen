@@ -18,7 +18,7 @@ function Module(moduleType, args, vars, outputs) {
 		for (var variable in vars) {
 			inputs[variable] = vars[variable];
 		}
-		var outputs = this.moduleType.func.apply(this, inputs);
+		var outputs = this.moduleType.func.call(this, inputs);
 		for (var output in outputs) {
 			this.outputs[output].setValue(outputs[output]);
 		}

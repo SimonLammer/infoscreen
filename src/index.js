@@ -1,3 +1,14 @@
+var infoscreen = {
+    container: [],
+    processes: [],
+    variables: []
+};
+
+var idCounter = 0;
+function getNextId(){
+    return ++idCounter;
+}
+
 var pages = [
     {
         name: 'Home',
@@ -36,13 +47,20 @@ var pages = [
                 <div id="preview" />
                 <div id="viewProperties" />
                 <div id="right">
-                    <div id="controls" />
+                    <div id="controls" >
+                        <button v-on:click="addContainer">Add Container</button>
+                    </div>
                     <div id="navigation" />
                     <div id="containerProperties" />
                 </div>
                 asdf
                 </div>
-            </div>`
+            </div>`,
+            methods:{
+                addContainer: function(event){
+                    infoscreen.container.push(createDefaultContainer());
+                }
+            }
         },
         navbarItems: []
     }
