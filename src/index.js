@@ -1,140 +1,3 @@
-var infoscreen = {
-    container: [],
-    processes: [],
-    variables: []
-};
-
-var idCounter = 0;
-function getNextId(){
-    return ++idCounter;
-}
-
-var pages = [
-    {
-        name: 'Home',
-        vueConfig: {
-            template: `
-            <div id="home">
-                <h1>Home</h1>
-                <ul>
-                    <li v-for="page in pages">
-                        {{ page.name }}
-                    </li>
-                </ul>
-            </div>`,
-            data: function() {
-                return {
-                    pages: pages
-                };
-            }  
-        },
-        navbarItems: [
-            {
-                class: "glyphicon glyphicon-alert",
-                text: "View on GitHub",
-                click: function() {
-                    alert('1');
-                }
-            }
-        ]
-    },
-    {
-        name: 'Editor',
-        vueConfig: {
-            template: `
-            <div id="editor">
-                <div style="background-color: #567;">
-                <div id="preview" />
-                <div id="viewProperties" />
-                <div id="right">
-                    <div id="controls" >
-                        <button v-on:click="addContainer">Add Container</button>
-                    </div>
-                    <div id="navigation" />
-                    <div id="containerProperties" />
-                </div>
-                asdf
-                </div>
-            </div>`,
-            methods:{
-                addContainer: function(event){
-                    infoscreen.container.push(createDefaultContainer());
-                }
-            }
-        },
-        navbarItems: []
-    }
-];
-
-var navbarItemsWrapper = {
-    navbarItems: []
-};
-Vue.component('navbar', {
-    template: `
-    <div>
-        <ul id="navbar">
-            <li>
-                <span class="glyphicon glyphicon-menu-hamburger" v-on:click="toggleMenu"></span>
-            </li>
-            <li v-for="item in navbarItems">
-                <span v-bind:class="item.class" v-on:click="item.click"></span>
-            </li>
-        </ul>
-        <div id="menu-wrapper">
-            <div id="menu" v-on:click="toggleMenu">
-                <my-menu />
-            </div>
-        </div>
-    </div>
-    `,
-    methods: {
-        toggleMenu: function() {
-            $('#menu-wrapper').toggleClass('show');
-        }
-    },
-    data: function() {
-        return navbarItemsWrapper;
-    },
-    mounted: function() {
-        this.$bus.$on('pageChanged', function() {
-            var currentPageNavbarItems = getCurrentPage().navbarItems;
-            if (!currentPageNavbarItems) {
-                currentPageNavbarItems = [];
-            }
-            navbarItemsWrapper.navbarItems = currentPageNavbarItems;
-        });
-    }
-});
-
-
-Vue.component('my-menu', {
-    template: `
-    <div id="menu-content" v-on:click="$event.stopPropagation()">
-        <h1>Pages:</h1>
-        <ul>
-            <li v-for="page in pages">
-                <a 
-                    v-bind:href="'?page=' + page.name"
-                    v-on:click="gotoPage($event, page.name)">
-                        {{ page.name }}
-                </a>
-            </li>
-        </ul>
-    </div>`,
-    methods: {
-        gotoPage: function(e, pageName) {
-            e.preventDefault();
-            gotoPage(pageName);
-            $('#menu-wrapper').removeClass('show');
-        }
-    },
-    data: function() {
-        return {
-            pages: pages
-        };
-    }
-});
-
 // define global event bus
 Object.defineProperty(Vue.prototype, '$bus', {
     get() {
@@ -165,21 +28,15 @@ var app = new Vue({
         }
     },
     mounted: function() {
-        this.currentView = (function() {
-            var match = window.location.search.match(/page=([^&]+)/);
-            if (match) {
-                return match[1];
-            } else {
-                return pages[0].name;
-            }
-        })();
+        var match = window.location.search.match(/page=([^&]+)/);
+        this.currentView = match ? match[1] : pages[0].name;
     }
 });
 
 function gotoPage(pageName) {
     app.currentView = pageName;
-    var match = window.location.toString().match(/(^[^?]*\?((?!page)[^=]+=[^&]+&?)*page=)([^&]*)(.*)/);
-    var newUrl = match[1] + pageName + match[4];
+    var match = window.location.toString().match(/(^[^?]*)\??(((?!page)[^=]+=[^&]+&?)*)(page=)?([^&]*)(.*)/);
+    var newUrl = match[1] + '?' + match[2] + 'page=' + pageName + match[6];
     window.history.pushState(null, '', newUrl);
 }
 
