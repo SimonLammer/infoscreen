@@ -1,7 +1,57 @@
 var infoscreen = {
-    container: [],
-    processes: [],
-    variables: []
+    name: 'Unnamed Infoscreen',
+    container: [
+        /*{
+            name: 'Sample container',
+            position: {
+                x: 4,             //  4 %
+                y: 10             // 10 %
+            },
+            size: {
+                width: 11,        // 11 %
+                height: 12        // 12 %
+            },
+            z-index: 4,
+            view: {
+                type: 'Color',    // ModuleType name
+                arguments: {
+                    // color: '#900' // could be set to a fixed value here, but in this example, the color should change dynamically, according to the 'Color' variable
+                },
+                variables: {
+                    color: 5      // use the value of the variable with id 5 as color input-variable 'color' (defined in the ModuleType)
+                }
+            }
+          }*/
+    ],
+    processes: [
+        /*{
+            type: 'Incrementor (Sample Process)',
+            arguments: {
+                // inputValueA: 'fixed value'
+            },
+            variables: {
+                number: 6         // use value of variable with id 6 as input-variable 'number'
+            },
+            outputs: {
+                result: 7         // save result in variable with id 7
+            }
+        }*/
+    ],
+    variables: [
+        /*{
+            id: 5,
+            name: 'Color',
+            initialValue: '#900'
+        },{
+            id: 6,
+            name: 'Number',
+            initialValue: 1
+        },{
+            id: 7,
+            name: 'Incremented Number',
+            initialValue: 0
+        }*/
+    ]
 };
 
 var idCounter = 0;

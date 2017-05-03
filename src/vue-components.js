@@ -36,22 +36,16 @@
 })();
 
 (function() {
+	var infoscreenWrapper = {
+		infoscreen: infoscreen
+	};
 	Vue.component('my-viewer', {
 		template: `
 		<div class="my-viewer">
-
+			
 		</div>`,
-		methods: {
-			gotoPage: function(e, pageName) {
-				e.preventDefault();
-				gotoPage(pageName);
-				$('#menu-wrapper').removeClass('show');
-			}
-		},
 		data: function() {
-			return {
-				pages: pages
-			};
+			return infoscreenWrapper;
 		}
 	});
 })();
