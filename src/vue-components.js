@@ -36,6 +36,27 @@
 })();
 
 (function() {
+	Vue.component('my-viewer', {
+		template: `
+		<div class="my-viewer">
+
+		</div>`,
+		methods: {
+			gotoPage: function(e, pageName) {
+				e.preventDefault();
+				gotoPage(pageName);
+				$('#menu-wrapper').removeClass('show');
+			}
+		},
+		data: function() {
+			return {
+				pages: pages
+			};
+		}
+	});
+})();
+
+(function() {
 	var navbarItemsWrapper = {
 		navbarItems: []
 	};
@@ -50,8 +71,8 @@
 					<span v-bind:class="item.class" v-on:click="item.click"></span>
 				</li>
 			</ul>
-			<div id="menu-wrapper">
-				<div id="menu" v-on:click="toggleMenu">
+			<div id="menu-wrapper" class="maximize">
+				<div id="menu" v-on:click="toggleMenu" class="maximize">
 					<my-menu />
 				</div>
 			</div>

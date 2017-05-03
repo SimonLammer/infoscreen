@@ -11,7 +11,7 @@ var app = new Vue({
     el: '#app',
     data: {
         bus: bus, // set event bus
-        currentView: ''
+        currentPage: ''
     },
     components: (function() {
         var components = {};
@@ -21,7 +21,7 @@ var app = new Vue({
         return components;
     })(),
     watch: {
-        currentView: function(newValue){
+        currentPage: function(newValue){
             this.$bus.$emit('pageChanged', {
                 newPage: newValue
             });
@@ -29,12 +29,12 @@ var app = new Vue({
     },
     mounted: function() {
         var match = window.location.search.match(/page=([^&]+)/);
-        this.currentView = match ? match[1] : pages[0].name;
+        this.currentPage = match ? match[1] : pages[0].name;
     }
 });
 
 function gotoPage(pageName) {
-    app.currentView = pageName;
+    app.currentPage = pageName;
     var match = window.location.toString().match(/(^[^?]*)\??(((?!page)[^=]+=[^&]+&?)*)(page=)?([^&]*)(.*)/);
     var newUrl = match[1] + '?' + match[2] + 'page=' + pageName + match[6];
     window.history.pushState(null, '', newUrl);
@@ -43,10 +43,10 @@ function gotoPage(pageName) {
 function getCurrentPage() {
     if (app) {
         var p = pages.filter(function(page) {
-            return page.name == app.currentView;
+            return page.name == app.currentPage;
         });
         if (p.length != 1) {
-            console.log(app.currentView, pages.map(function(page) {
+            console.log(app.currentPage, pages.map(function(page) {
                 return page.name;
             }));
             throw 'Invalid current page!';

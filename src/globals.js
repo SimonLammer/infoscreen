@@ -37,8 +37,7 @@ var pages = [
                 }
             }
         ]
-    },
-    {
+    },{
         name: 'Editor',
         vueConfig: {
             template: `
@@ -61,6 +60,14 @@ var pages = [
                     infoscreen.container.push(createDefaultContainer());
                 }
             }
+        },
+        navbarItems: []
+    },{
+        name: 'Viewer',
+        vueConfig: {
+            template: `<div id="viewer">
+                <my-viewer class="maximize" />
+            </div>`
         },
         navbarItems: []
     }
