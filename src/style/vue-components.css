@@ -1,3 +1,10 @@
 .my-viewer {
+	position: relative;
+	
 	background-color: #900;
+}
+.my-viewer > .container {
+	position: absolute;
+	
+	background-color: #0a0;
 }

@@ -36,16 +36,45 @@
 })();
 
 (function() {
-	var infoscreenWrapper = {
-		infoscreen: infoscreen
+	var data = {
+		infoscreen: infoscreen,
+		domElements: {}
+	};
+	var updateDomElements = function() {
+		var viewerDomElement = $(this.$el);
+		data.domElements = {};
+		data.infoscreen.container.forEach(function(container) {
+			data.domElements[container.name] = viewerDomElement.find('.container[container-name="' + container.name + '"]');
+		})
+		console.log('updateDomElements()', data.domElements);
 	};
 	Vue.component('my-viewer', {
 		template: `
-		<div class="my-viewer">
+		<div class="my-viewer" v-bind:infoscreen-name="infoscreen.name">
+			<div v-for="container in infoscreen.container" class="container" v-bind:container-name="container.name" v-bind:view-type="container.view.type"
+			v-bind:style="{
+				top: container.position.y + '%',
+				left: container.position.x + '%',
+				width: container.size.width + '%',
+				height: container.size.height + '%',
+				'z-index': container.zindex
+			}">
 			
+			</div>
 		</div>`,
 		data: function() {
-			return infoscreenWrapper;
+			return data;
+		},
+		mounted: function() {
+			updateDomElements.call(this);
+		},
+		watch: {
+			'infoscreen.container': {
+				handler: function() {
+					updateDomElements.call(this);
+				},
+				deep: true
+			}
 		}
 	});
 })();

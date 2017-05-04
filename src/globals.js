@@ -1,7 +1,7 @@
 var infoscreen = {
     name: 'Unnamed Infoscreen',
     container: [
-        /*{
+        {
             name: 'Sample container',
             position: {
                 x: 4,             //  4 %
@@ -11,7 +11,7 @@ var infoscreen = {
                 width: 11,        // 11 %
                 height: 12        // 12 %
             },
-            z-index: 4,
+            zindex: 4,
             view: {
                 type: 'Color',    // ModuleType name
                 arguments: {
@@ -21,7 +21,7 @@ var infoscreen = {
                     color: 5      // use the value of the variable with id 5 as color input-variable 'color' (defined in the ModuleType)
                 }
             }
-          }*/
+          }
     ],
     processes: [
         /*{
@@ -38,11 +38,11 @@ var infoscreen = {
         }*/
     ],
     variables: [
-        /*{
+        {
             id: 5,
             name: 'Color',
             initialValue: '#900'
-        },{
+        }/*,{
             id: 6,
             name: 'Number',
             initialValue: 1
