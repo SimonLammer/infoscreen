@@ -13,6 +13,6 @@ addModuleType(new ModuleType({
 		);
 	},
 	func: function(inputs) {
-		$(inputs).find('.header').html(inputs.text);
+		$(inputs.ui).find('.header').html(inputs.text);
 	}
 }));

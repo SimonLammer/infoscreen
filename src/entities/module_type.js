@@ -8,7 +8,7 @@ function ModuleType(config) {
 	this.func = config.func;
 }
 
-window.moduleTypes = [];
+var moduleTypes = [];
 function addModuleType(moduleType) {
 	moduleTypes.push(moduleType);
 }
