@@ -13,6 +13,9 @@ module.exports = {
     filename: 'bundle-[hash].js',
     path: path.resolve(__dirname, 'dist')
   },
+  devServer: {
+    contentBase: path.resolve(__dirname, 'dist')
+  },
   module: {
     rules: [
 		  {

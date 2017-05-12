@@ -30,12 +30,13 @@
     "style-loader": "^0.17.0",
     "ts-loader": "^2.0.3",
     "typescript": "^2.3.2",
-    "webpack": "^2.5.1"
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.4.5"
   },
   "scripts": {
     "prestart": "npm run webpack",
     "start": "http-server dist",
-    "dev": "concurrently \"http-server dist\" \"webpack --watch true\"",
+    "dev": "webpack-dev-server",
     "pretest": "npm run webpack",
     "test": "karma start --browsers PhantomJS && karma start",
     "webpack": "webpack -p"
