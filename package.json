@@ -7,6 +7,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/node": "^7.0.18",
     "clean-webpack-plugin": "^0.1.16",
     "concurrently": "^3.4.0",
     "css-loader": "^0.28.1",

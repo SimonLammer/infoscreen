@@ -14,15 +14,12 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   module: {
-	  loaders: [
+    rules: [
 		  {
 			  test: /\.ts$/,
 			  include: path.resolve(__dirname, 'src'),
 			  loader: 'ts-loader'
-		  }
-	  ],
-    rules: [
-      {
+		  }, {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",

@@ -3,6 +3,12 @@
 		"src/app.ts"
 	],
 	"compilerOptions": {
-		"sourceMap": true
+		"sourceMap": true,
+		 "types": [
+            "node"
+         ],
+         "typeRoots": [
+            "node_modules/@types"
+         ]
 	}
 }
