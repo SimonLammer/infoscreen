@@ -47,7 +47,8 @@ module.exports = {
     new OpenBrowserPlugin(),
     new CleanWebpackPlugin(
       [
-        'dist/bundle-*'
+        'dist/bundle-*',
+        'dist/style-*'
       ], {
         root: __dirname,
         verbose: true, // Write logs to console.
@@ -57,7 +58,7 @@ module.exports = {
       }
     ),
     new ExtractTextPlugin({
-      filename: 'bundle-[contenthash].css',
+      filename: 'style-[contenthash].css',
       //disabled: false,
       allChunks: true
     })
