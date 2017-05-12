@@ -2,11 +2,11 @@ var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: [
-    './src/app.ts',
-    //'./src/style.scss'
+    './src/app.ts'
   ],
   devtool: 'source-map',
   output: {
@@ -24,7 +24,10 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ExtractTextPlugin.extract({
+          fallback:"style-loader",
+          use:["css-loader","sass-loader"]
+        })
       }
     ]
   },
@@ -47,7 +50,12 @@ module.exports = {
         watch: false,
         //exclude: ['index.html'] 
       }
-    )
+    ),
+    new ExtractTextPlugin({
+      filename: 'bundle-[contenthash].css',
+      //disabled: false,
+      allChunks: true
+    })
   ],
   watch: false
 };
