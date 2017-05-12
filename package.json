@@ -38,7 +38,7 @@
     "dev": "concurrently \"http-server dist\" \"webpack --watch true\"",
     "pretest": "npm run webpack",
     "test": "karma start --browsers PhantomJS && karma start",
-    "webpack": "webpack"
+    "webpack": "webpack -p"
   },
   "repository": {
     "type": "git",
