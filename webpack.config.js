@@ -2,9 +2,13 @@ var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-  entry: './src/app.ts',
+  entry: [
+    './src/app.ts',
+    './src/style.css'
+  ],
   devtool: 'source-map',
   output: {
     filename: 'bundle-[hash].js',
@@ -17,7 +21,16 @@ module.exports = {
 			  include: path.resolve(__dirname, 'src'),
 			  loader: 'ts-loader'
 		  }
-	  ]
+	  ],
+    rules: [
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
+      }
+    ]
   },
   resolve: {
 	  extensions: ['.ts', '.js']
@@ -30,7 +43,7 @@ module.exports = {
     new OpenBrowserPlugin(),
     new CleanWebpackPlugin(
       [
-        'dist/bundle-*.js*'
+        'dist/bundle-*'
       ], {
         root: __dirname,
         verbose: true, // Write logs to console.
@@ -38,7 +51,8 @@ module.exports = {
         watch: false,
         //exclude: ['index.html'] 
       }
-    )
+    ),
+    new ExtractTextPlugin('bundle-[contenthash].css')
   ],
   watch: false
 };

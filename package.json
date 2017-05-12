@@ -9,6 +9,8 @@
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.16",
     "concurrently": "^3.4.0",
+    "css-loader": "^0.28.1",
+    "extract-text-webpack-plugin": "^2.1.0",
     "html-webpack-plugin": "^2.28.0",
     "http-server": "^0.10.0",
     "jasmine": "^2.6.0",
@@ -22,6 +24,7 @@
     "karma-opera-launcher": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "open-browser-webpack-plugin": "0.0.5",
+    "style-loader": "^0.17.0",
     "ts-loader": "^2.0.3",
     "typescript": "^2.3.2",
     "webpack": "^2.5.1"
