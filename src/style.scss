@@ -1,6 +1,10 @@
+@import "~normalize-scss/sass/normalize/import-now"; 
+
 body {
 	background-color: #900;
 	p {
 		background-color: #090;
 	}
 }
+
+@import "style/style2";

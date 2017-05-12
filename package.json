@@ -5,7 +5,9 @@
   "directories": {
     "test": "tests"
   },
-  "dependencies": {},
+  "dependencies": {
+    "normalize-scss": "^6.0.0"
+  },
   "devDependencies": {
     "@types/node": "^7.0.18",
     "clean-webpack-plugin": "^0.1.16",
