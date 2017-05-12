@@ -1,3 +1,5 @@
+const css = require('./style.scss');
+
 var mls = `
 multiline
 text`;
