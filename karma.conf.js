@@ -70,7 +70,7 @@ module.exports = function(config) {
     ],
 
     plugins : [
-        //'karma-phantomjs-launcher',
+        'karma-phantomjs-launcher',
         'karma-chrome-launcher',
         'karma-firefox-launcher',
         //'karma-opera-launcher',
@@ -80,7 +80,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
