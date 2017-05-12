@@ -5,6 +5,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './src/app.ts',
+  devtool: 'source-map',
   output: {
     filename: 'bundle-[hash].js',
     path: path.resolve(__dirname, 'dist')
@@ -29,7 +30,7 @@ module.exports = {
     new OpenBrowserPlugin(),
     new CleanWebpackPlugin(
       [
-        'dist/bundle-*.js'
+        'dist/bundle-*.js*'
       ], {
         root: __dirname,
         verbose: true, // Write logs to console.
