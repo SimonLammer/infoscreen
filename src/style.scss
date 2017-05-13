@@ -1,4 +1,6 @@
-@import "~normalize-scss/sass/normalize/import-now"; 
+@import "~normalize-scss/sass/normalize/import-now";
+$bootstrap-sass-asset-helper: true;
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
 body {
 	background-color: #900;
