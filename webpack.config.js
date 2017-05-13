@@ -22,26 +22,43 @@ module.exports = {
 		  {
 			  test: /\.ts$/,
 			  include: path.resolve(__dirname, 'src'),
-			  loader: 'ts-loader'
+			  loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
 		  }, {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
           use: [{
-                loader: "css-loader", options: {
-                    sourceMap: true
-                }
+              loader: "css-loader", options: {
+                sourceMap: true
+              }
             }, {
-                loader: "sass-loader", options: {
-                    sourceMap: true
-                }
+              loader: "sass-loader", options: {
+                sourceMap: true
+              }
             }]
         })
+      }, {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          esModule: true,
+          loaders: {
+            'scss': 'vue-style-loader!css-loader!sass-loader',
+            'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+          }
+          // other vue-loader options go here  
+        }
       }
     ]
   },
   resolve: {
-	  extensions: ['.ts', '.js']
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    },
+	  extensions: ['.js', '.ts']
   },
   plugins: [
     new HtmlWebpackPlugin({
