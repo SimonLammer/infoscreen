@@ -28,3 +28,9 @@ export default {
   }
 } as ComponentOptions<MyComponent>
 </script>
+
+<style scoped>
+div {
+  background-color: #afb;
+}
+</style>
