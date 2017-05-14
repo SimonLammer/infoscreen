@@ -2,6 +2,7 @@
   <div>
     <input v-model="message">
     <button @click="onClick">Greet</button>
+    <div>Inner DIV</div>
     <other-component></other-component>
   </div>
 </template>
@@ -35,8 +36,11 @@ export default {
 } as ComponentOptions<MyComponent>
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../style/variables";
 div {
-  background-color: #afb;
+  > div {
+    background-color: $brand-success;
+  }
 }
 </style>
