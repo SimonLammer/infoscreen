@@ -90,26 +90,9 @@ var pages = [
     },{
         name: 'Editor',
         vueConfig: {
-            template: `
-            <div id="editor">
-                <div style="background-color: #567;">
-                <div id="preview" />
-                <div id="viewProperties" />
-                <div id="right">
-                    <div id="controls" >
-                        <button v-on:click="addContainer">Add Container</button>
-                    </div>
-                    <div id="navigation" />
-                    <div id="containerProperties" />
-                </div>
-                asdf
-                </div>
-            </div>`,
-            methods:{
-                addContainer: function(event){
-                    infoscreen.container.push(createDefaultContainer());
-                }
-            }
+            template: `<div id="editor">
+                <editor class="maximize" />
+            </div>`
         },
         navbarItems: []
     },{

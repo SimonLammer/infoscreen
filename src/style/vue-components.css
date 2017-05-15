@@ -8,3 +8,50 @@
 	
 	background-color: #0a0;
 }
+.editor .preview {
+	width: 100%;
+	height: 70%;
+}
+
+.leftColumn {
+	height: 100%;
+	float: left;
+}
+
+.rightColumn {
+	height: 100%;
+	float: right;
+}
+
+.editor > .leftColumn {
+	width: 70%;
+}
+
+.editor .propertyEditor {
+	width: 100%;
+	height: 30%;
+	background-color: darkslategray;
+}
+
+.editor .containerNavigation {
+	background-color: darkgoldenrod;
+	width: 100%;
+	height: 50%;
+}
+
+.editor .containerPropertyEditor {
+	background-color: crimson;
+	height: 50%;
+}
+
+.editor > .rightColumn {
+	width: 30%;
+}
+
+.propertyEditor > .rightColumn {
+	width: 50%;
+}
+
+.propertyEditor > .leftColumn {
+	width: 50%;
+}
