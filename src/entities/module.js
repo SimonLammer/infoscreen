@@ -10,50 +10,57 @@ function Module(moduleType, args, vars, outputs) {
 	this.args = args;
 	this.vars = vars;
 	this.outputs = outputs;
+	var self = this;
 	this.update = function() {
 		var inputs = {};
-		for (var arg in args) {
-			inputs[arg] = args[arg];
+		for (var arg in self.args) {
+			inputs[arg] = self.args[arg];
 		}
-		for (var variable in vars) {
-			inputs[variable] = vars[variable];
+		for (var variable in self.vars) {
+			inputs[variable] = self.vars[variable].value;
 		}
-		var outputs = this.moduleType.func.call(this, inputs);
-		for (var output in outputs) {
-			this.outputs[output].setValue(outputs[output]);
+		if (self.moduleType.isView) {
+			var container = inputs.ui;
+			container.forEach(function(container) {
+				inputs.ui = container;
+				self.moduleType.func.call(self, inputs);
+			});
+		} else {
+			var outputs = self.moduleType.func.call(self, inputs);
+			for (var output in outputs) {
+				self.outputs[output].setValue(outputs[output]);
+			}
+			return outputs;
 		}
-		return outputs;
 	};
-
-	var self = this;
 	var callback = function() {
 		self.update.call(self);
 	};
 	this.enabled = false;
 	this.enable = function() {
-		if (this.enabled) {
+		if (self.enabled) {
 			return;
 		}
 		for (var i = 0; i < vars.length; i++) {
 			vars[i].addObserver(callback);
 		}
-		this.enabled = true;
-		if (this.enabledCallback) {
-			this.prepare();
+		self.enabled = true;
+		if (self.enabledCallback) {
+			self.prepare();
 		}
-		this.update();
+		self.update();
 	};
 	this.disable = function() {
-		if (!this.enabled) {
+		if (!self.enabled) {
 			return;
 		}
-		if (this.disabledCallback) {
-			this.disabledCallback();
+		if (self.disabledCallback) {
+			self.disabledCallback();
 		}
 		for (var i = 0; i < args.length; i++) {
 			args[i].removeObserver(callback);
 		}
-		this.enabled = false;
+		self.enabled = false;
 	};
 	this.enable();
 }

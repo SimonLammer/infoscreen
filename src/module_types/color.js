@@ -6,6 +6,6 @@ addModuleType(new ModuleType({
 	outputs: {},
 	isView: true,
 	func: function(inputs) {
-		$(inputs).css('background-color', inputs.color);
+		$(this.ui).css('background-color', inputs.color);
 	}
 }));

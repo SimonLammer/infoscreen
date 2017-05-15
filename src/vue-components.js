@@ -37,15 +37,17 @@
 
 (function() {
 	var data = {
-		infoscreen: infoscreen,
-		domElements: {}
+		infoscreen: infoscreen
 	};
 	var updateDomElements = function() {
 		var viewerDomElement = $(this.$el);
 		data.domElements = {};
-		data.infoscreen.container.forEach(function(container) {
-			data.domElements[container.name] = viewerDomElement.find('.container[container-name="' + container.name + '"]');
-		})
+		for (view in infoscreenRuntime.views) {
+			var containerDom = viewerDomElement.find('.container[container-name="' + view + '"]')[0];
+			if (infoscreenRuntime.views[view].args.ui.indexOf(containerDom) < 0) {
+				infoscreenRuntime.views[view].args.ui.push(containerDom);
+			}
+		}
 		console.log('updateDomElements()', data.domElements);
 	};
 	Vue.component('my-viewer', {
