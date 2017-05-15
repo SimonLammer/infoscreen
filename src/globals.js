@@ -179,3 +179,5 @@ var pages = [
         navbarItems: []
     }
 ];
+
+var currentContainer = infoscreen.container[0];

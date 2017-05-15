@@ -169,12 +169,48 @@
 	Vue.component('propertyEditor', {
 		template: `
             <div class="propertyEditor">
-                <div class="leftColumn">
-					Arguments
+                <div id="argumentEditor" class="leftColumn">
+					<button id="btnAddArgument" v-on:click="addArgument">Add Argument</button>
 				</div>
 				<div class="rightColumn">
 					Variables
 				</div>
-            </div>`
+            </div>
+			`,
+		methods: {
+			addArgument: function(event){
+				var btn = event.target;
+				var holder = $("#argumentEditor");
+				btn.remove();
+				
+				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
+				var keys = Object.keys(inputs);
+				var select = $("<select>", {selectedIndex: -1});
+
+				// add all remaining inputs to select list
+				var optionCnt = 0;
+				for(var i in keys){
+					if(Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1){
+						$("<option>", {text: inputs[keys[i]]}).appendTo(select);
+						optionCnt++;
+					}
+				}
+				select.appendTo(holder).selectmenu({
+					select: function(event, ui){
+						// add argumentEditor for selected input
+						// TODO remove input from variables editor if necessary
+						$("<div>").appendTo(holder).argumentEditor({argumentName: ui.item.label});
+						optionCnt--;
+					},
+					close: function(){
+						select.remove();
+						if(optionCnt > 0){
+							// display add button only when they are remaining inputs
+							$(btn).appendTo(holder);
+						}
+					}
+				}).selectmenu("open");      
+			},
+		}
 	})
 })();
