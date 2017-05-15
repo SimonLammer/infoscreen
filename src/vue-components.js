@@ -5,6 +5,48 @@
  * })();
  */
 
+(function(){
+	Vue.component('containerNavigation', {
+		template: `
+            <div class="containerNavigation">
+                <div class="buttonBar" >
+	                <button v-on:click="addContainer">Add Container</button>
+                </div>
+				NAVIGATION
+            </div>`,
+		methods:{
+			addContainer: function(event){
+				infoscreen.container.push(createDefaultContainer());
+			}
+		}
+	})
+})();
+
+(function(){
+	Vue.component('containerPropertyEditor', {
+		template: `
+            <div class="containerPropertyEditor">
+                CONTAINER PROPERTIES
+            </div>`
+	})
+})();
+
+(function(){
+	Vue.component('editor', {
+		template: `
+            <div class="editor maximize">
+            	<div class="leftColumn">
+					<my-viewer class="preview"/>
+					<propertyEditor />
+				</div>
+                <div class="rightColumn">
+                    <containerNavigation />
+                    <containerPropertyEditor />
+                </div>
+            </div>`
+	})
+})();
+
 (function() {
 	Vue.component('my-menu', {
 		template: `
@@ -81,62 +123,6 @@
 	});
 })();
 
-(function(){
-	Vue.component('editor', {
-		template: `
-            <div class="editor maximize">
-            	<div class="leftColumn">
-					<my-viewer class="preview"/>
-					<propertyEditor />
-				</div>
-                <div class="rightColumn">
-                    <containerNavigation />
-                    <containerPropertyEditor />
-                </div>
-            </div>`
-	})
-})();
-
-(function(){
-	Vue.component('propertyEditor', {
-		template: `
-            <div class="propertyEditor">
-                <div class="leftColumn">
-					Arguments
-				</div>
-				<div class="rightColumn">
-					Variables
-				</div>
-            </div>`
-	})
-})();
-
-(function(){
-	Vue.component('containerNavigation', {
-		template: `
-            <div class="containerNavigation">
-                <div class="buttonBar" >
-	                <button v-on:click="addContainer">Add Container</button>
-                </div>
-				NAVIGATION
-            </div>`,
-		methods:{
-			addContainer: function(event){
-				infoscreen.container.push(createDefaultContainer());
-			}
-		}
-	})
-})();
-
-(function(){
-	Vue.component('containerPropertyEditor', {
-		template: `
-            <div class="containerPropertyEditor">
-                CONTAINER PROPERTIES
-            </div>`
-	})
-})();
-
 (function() {
 	var navbarItemsWrapper = {
 		navbarItems: []
@@ -177,4 +163,18 @@
 			});
 		}
 	});
+})();
+
+(function(){
+	Vue.component('propertyEditor', {
+		template: `
+            <div class="propertyEditor">
+                <div class="leftColumn">
+					Arguments
+				</div>
+				<div class="rightColumn">
+					Variables
+				</div>
+            </div>`
+	})
 })();
