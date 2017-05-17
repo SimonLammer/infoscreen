@@ -13,11 +13,14 @@
 				<input v-model="argumentValue" />
 				<button v-on:click="removeArgument">X</button>
             </div>`,
-		props: ['argumentName'],
+		props: ['argumentName', 'initialValue'],
 		data: function () {
 			return {
 				argumentValue: ''
 			};
+		},
+		created: function(){
+			this.argumentValue = this.initialValue;
 		},
 		watch: {
 			argumentValue: function (val) {
@@ -208,11 +211,11 @@
 		template: `
             <div class="propertyEditor">
                 <div id="argumentEditor" class="leftColumn">
-					<argumentEditor v-for="argumentName in argumentNames" v-bind:argumentName="argumentName" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
+					<argumentEditor v-for="(argumentName,i) in argumentNames" :argumentName="argumentName" :initialValue="argumentValues[i]" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
 					<button id="btnAddArgument" v-on:click="addArgument">Add Argument</button>
 				</div>
 				<div id="variableArgumentEditor" class="rightColumn">
-					<variableEditor v-for="argumentName in variableArgumentNames" v-bind:argumentName="argumentName" :key="argumentName" v-on:remove="removeVariable(argumentName)"></variableEditor>
+					<variableEditor v-for="(argumentName, i) in variableArgumentNames" :argumentName="argumentName" :initialValue="variableArgumentValues[i]" :key="argumentName" v-on:remove="removeVariable(argumentName)"></variableEditor>
 					<button id="btnAddVariable" v-on:click="addVariable">Add Variable as Argument</button>
 				</div>
             </div>
@@ -220,9 +223,22 @@
 		data: function () {
 			return {
 				argumentNames: [],
-				variableArgumentNames: [], 
+				argumentValues: [],
+				variableArgumentNames: [],
+				variableArgumentValues: [],
 				argumentAddButton: $("#btnAddArgument"), 
 				variableAddButton: $("#btnAddVariable")
+			}
+		},
+		created: function(){
+			var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
+			for(arg in currentContainer.view.arguments){
+				this.argumentNames.push(inputs[arg]);
+				this.argumentValues.push(currentContainer.view.arguments[arg])
+			}
+			for(arg in currentContainer.view.variables){
+				this.variableArgumentNames.push(inputs[arg]);
+				this.variableArgumentValues.push(currentContainer.view.variables[arg]);
 			}
 		},
 		methods: {
@@ -250,7 +266,7 @@
 				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
 				var keys = Object.keys(inputs);
 				for (var i in keys) {
-					if (Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1) {
+					if (Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1 && Object.keys(currentContainer.view.variables).indexOf(keys[i]) == -1 ) {
 						args.push(inputs[keys[i]]);
 					}
 				}
@@ -282,12 +298,15 @@
 				</select>
 				<button v-on:click="removeVariable">X</button>
             </div>`,
-		props: ['argumentName'],
+		props: ['argumentName', 'initialValue'],
 		data: function () {
 			return {
 				variableName: '',
 				selectedVar: ''
 			};
+		},
+		created: function(){
+			this.selectedVar = this.initialValue;
 		},
 		computed: {
 			variables: function () {
