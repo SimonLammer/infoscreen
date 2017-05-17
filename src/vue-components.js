@@ -254,11 +254,9 @@
 			},
 			removeArgument: function (argumentName) {
 				this.argumentNames.splice(this.argumentNames.indexOf(argumentName), 1);
-				//this.argumentAddButton.appendTo($("#argumentEditor"));
 			},
 			removeVariable: function (argumentName) {
 				this.variableArgumentNames.splice(this.variableArgumentNames.indexOf(argumentName), 1);
-				//this.variableAddButton.appendTo($("#variableArgumentEditor"));
 			},
 
 			getAvailableArguments: function () {
@@ -285,7 +283,6 @@
 				})
 			},
 			argsAvailable: function(){
-				console.log("update " + this.argumentNames.length + " + " + this.variableArgumentNames.length + " < " + Object.keys(getModuleTypeByName(currentContainer.view.type).inputs).length);
 				return this.argumentNames.length + this.variableArgumentNames.length < Object.keys(getModuleTypeByName(currentContainer.view.type).inputs).length;
 			}
 		}
