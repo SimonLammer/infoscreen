@@ -1,6 +1,6 @@
-var getNextId = (function() {
+var getNextId = (function () {
     var idCounter = 0;
-    return function() {
+    return function () {
         return ++idCounter;
     };
 })();
@@ -28,7 +28,7 @@ var infoscreen = {
                     color: 5      // use the value of the variable with id 5 as input-variable 'color' (defined in the ModuleType)
                 }
             }
-          }
+        }
     ],
     processes: [
         /*{
@@ -50,11 +50,11 @@ var infoscreen = {
             id: 5,
             name: 'Color',
             initialValue: '#900'
-        }/*,{
+        },{
             id: 6,
             name: 'Number',
             initialValue: 1
-        },{
+        }/*,{
             id: 7,
             name: 'Incremented Number',
             initialValue: 0
@@ -87,16 +87,16 @@ function updateRuntime() {
         infoscreenRuntime.views[viewName].args.ui = [];
         infoscreenRuntime.views[viewName].disable();
     }
-    infoscreenRuntime.processes.forEach(function(oldProcess) {
+    infoscreenRuntime.processes.forEach(function (oldProcess) {
         oldProcess.disable();
     });
     infoscreenRuntime.views = {};
     infoscreenRuntime.processes = [];
     infoscreenRuntime.variables = {};
-    infoscreen.variables.forEach(function(variable) {
+    infoscreen.variables.forEach(function (variable) {
         infoscreenRuntime.variables[variable.id] = new Variable(variable.name, variable.initialValue);
     });
-    infoscreen.container.forEach(function(container) {
+    infoscreen.container.forEach(function (container) {
         var moduleType = getModuleTypeByName(container.view.type);
         if (!moduleType.isView) {
             throw 'ModuleType "' + container.view.type + '" for container "' + container.name + '" is not a view!';
@@ -112,7 +112,7 @@ function updateRuntime() {
         }
         infoscreenRuntime.views[container.name] = new Module(moduleType, args, vars, {});
     });
-    infoscreen.processes.forEach(function(process) {
+    infoscreen.processes.forEach(function (process) {
         var moduleType = getModuleTypeByName(process.type);
         if (moduleType.isView) {
             throw 'ModuleType "' + container.view.type + '" for process "' + process.name + '" is not a view!';
@@ -146,22 +146,22 @@ var pages = [
                     </li>
                 </ul>
             </div>`,
-            data: function() {
+            data: function () {
                 return {
                     pages: pages
                 };
-            }  
+            }
         },
         navbarItems: [
             {
                 class: "glyphicon glyphicon-alert",
                 text: "View on GitHub",
-                click: function() {
+                click: function () {
                     alert('1');
                 }
             }
         ]
-    },{
+    }, {
         name: 'Editor',
         vueConfig: {
             template: `<div id="editor">
@@ -169,7 +169,7 @@ var pages = [
             </div>`
         },
         navbarItems: []
-    },{
+    }, {
         name: 'Viewer',
         vueConfig: {
             template: `<div id="viewer">
@@ -181,3 +181,31 @@ var pages = [
 ];
 
 var currentContainer = infoscreen.container[0];
+
+
+$.widget("custom.selectPopup", {
+    options: {
+        data: []
+    },
+    _create: function () {
+        var _this = this;
+
+       this.select = $("<select>", { selectedIndex: -1 });
+       for(var i in this.options.data){
+           $("<option>", { text: this.options.data[i] }).appendTo(this.select);
+       }
+
+       this.select.appendTo(this.element).selectmenu({
+            select: function (event, ui) {
+                _this._trigger("select", event, ui.item.label);
+            },
+            close: function (event) {
+                _this.select.remove();
+                _this._trigger("close", event, null);
+            }
+        }).selectmenu("open");
+    },
+    _destroy: function(){
+        this.select.remove();
+    }
+});

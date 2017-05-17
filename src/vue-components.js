@@ -211,53 +211,108 @@
 					<argumentEditor v-for="argumentName in argumentNames" v-bind:argumentName="argumentName" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
 					<button id="btnAddArgument" v-on:click="addArgument">Add Argument</button>
 				</div>
-				<div class="rightColumn">
-					Variables
+				<div id="variableArgumentEditor" class="rightColumn">
+					<variableEditor v-for="argumentName in variableArgumentNames" v-bind:argumentName="argumentName" :key="argumentName" v-on:remove="removeVariable(argumentName)"></variableEditor>
+					<button id="btnAddVariable" v-on:click="addVariable">Add Variable as Argument</button>
 				</div>
             </div>
 			`,
 		data: function () {
-			return { argumentNames: [] }
+			return {
+				argumentNames: [],
+				variableArgumentNames: [], 
+				argumentAddButton: $("#btnAddArgument"), 
+				variableAddButton: $("#btnAddVariable")
+			}
 		},
 		methods: {
 			addArgument: function (event) {
-				var _this = this;
-				this.addButton = $(event.target);
-				var holder = $("#argumentEditor");
-				this.addButton.remove();
-
-				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
-				var keys = Object.keys(inputs);
-				var select = $("<select>", { selectedIndex: -1 });
-
-				// add all remaining inputs to select list
-				var optionCnt = 0;
-				for (var i in keys) {
-					if (Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1) {
-						$("<option>", { text: inputs[keys[i]] }).appendTo(select);
-						optionCnt++;
-					}
-				}
-				select.appendTo(holder).selectmenu({
-					select: function (event, ui) {
-						// add argumentEditor for selected input
-						// TODO remove input from variables editor if necessary
-						//$("<div>").appendTo(holder).argumentEditor({ argumentName: ui.item.label });
-						_this.argumentNames.push(ui.item.label);
-						optionCnt--;
-					},
-					close: function () {
-						select.remove();
-						if (optionCnt > 0) {
-							// display add button only when they are remaining inputs
-							this.addButton.appendTo(holder);
-						}
-					}
-				}).selectmenu("open");
+				this.argumentAddButton = $("#btnAddArgument");
+				this.argumentAddButton.remove();
+				this.showSelectPopup($("#argumentEditor"), this.argumentAddButton, this.argumentNames);
+			},
+			addVariable: function (event) { 
+				this.variableAddButton = $("#btnAddVariable");
+				this.variableAddButton.remove();
+				this.showSelectPopup($("#variableArgumentEditor"), this.variableAddButton, this.variableArgumentNames);
 			},
 			removeArgument: function (argumentName) {
-				this.argumentNames.splice(this.argumentNames.indexOf(argumentName),1);
-				this.addButton.appendTo($("#argumentEditor"));
+				this.argumentNames.splice(this.argumentNames.indexOf(argumentName), 1);
+				this.argumentAddButton.appendTo($("#argumentEditor"));
+			},
+			removeVariable: function (argumentName) {
+				this.variableArgumentNames.splice(this.variableArgumentNames.indexOf(argumentName), 1);
+				this.variableAddButton.appendTo($("#variableArgumentEditor"));
+			},
+
+			getAvailableArguments: function () {
+				var args = [];
+				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
+				var keys = Object.keys(inputs);
+				for (var i in keys) {
+					if (Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1) {
+						args.push(inputs[keys[i]]);
+					}
+				}
+				return args;
+			},
+			showSelectPopup(container, button, selectionArray) {
+				container.selectPopup({
+					data: this.getAvailableArguments(),
+					select: function (event, selectedVar) {
+						selectionArray.push(selectedVar);
+					},
+					close: function () {
+						container.selectPopup("destroy");
+						button.appendTo(container);
+					}
+				})
+			}
+		}
+	})
+})();
+
+(function () {
+	Vue.component('variableEditor', {
+		template: `
+            <div>
+                <label>{{argumentName}}</label>
+				<select v-model="selectedVar">
+					<option v-for="variable in variables" :value="variable.id">{{variable.name}}</option>
+				</select>
+				<button v-on:click="removeVariable">X</button>
+            </div>`,
+		props: ['argumentName'],
+		data: function () {
+			return {
+				variableName: '',
+				selectedVar: ''
+			};
+		},
+		computed: {
+			variables: function () {
+				return infoscreen.variables;
+			}
+		},
+		watch: {
+			selectedVar: function (val) {
+				this.setVariable(val);
+			}
+		},
+		methods: {
+			removeVariable: function () {
+				delete currentContainer.view.variables[this.getArgumentKey()];
+				this.$emit('remove');
+			},
+			setVariable: function (value) {
+				currentContainer.view.variables[this.getArgumentKey()] = value;
+			},
+			getArgumentKey: function () {
+				var _this = this;
+				var moduleType = getModuleTypeByName(currentContainer.view.type);
+				return Object.keys(moduleType.inputs).find(function (key) {
+					return moduleType.inputs[key] == _this.argumentName;
+				});
 			}
 		}
 	})
