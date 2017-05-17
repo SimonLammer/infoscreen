@@ -5,7 +5,45 @@
  * })();
  */
 
-(function(){
+(function () {
+	Vue.component('argumentEditor', {
+		template: `
+            <div>
+                <label>{{argumentName}}</label>
+				<input v-model="argumentValue" />
+				<button v-on:click="removeArgument">X</button>
+            </div>`,
+		props: ['argumentName'],
+		data: function () {
+			return {
+				argumentValue: ''
+			};
+		},
+		watch: {
+			argumentValue: function (val) {
+				this.setArgument(val);
+			}
+		},
+		methods: {
+			removeArgument: function () {
+				delete currentContainer.view.arguments[this.getArgumentKey()];
+				this.$emit('remove');
+			},
+			setArgument: function (value) {
+				currentContainer.view.arguments[this.getArgumentKey()] = value;
+			},
+			getArgumentKey: function () {
+				var _this = this;
+				var moduleType = getModuleTypeByName(currentContainer.view.type);
+				return Object.keys(moduleType.inputs).find(function (key) {
+					return moduleType.inputs[key] == _this.argumentName;
+				});
+			}
+		}
+	})
+})();
+
+(function () {
 	Vue.component('containerNavigation', {
 		template: `
             <div class="containerNavigation">
@@ -14,15 +52,15 @@
                 </div>
 				NAVIGATION
             </div>`,
-		methods:{
-			addContainer: function(event){
+		methods: {
+			addContainer: function (event) {
 				infoscreen.container.push(createDefaultContainer());
 			}
 		}
 	})
 })();
 
-(function(){
+(function () {
 	Vue.component('containerPropertyEditor', {
 		template: `
             <div class="containerPropertyEditor">
@@ -31,7 +69,7 @@
 	})
 })();
 
-(function(){
+(function () {
 	Vue.component('editor', {
 		template: `
             <div class="editor maximize">
@@ -47,7 +85,7 @@
 	})
 })();
 
-(function() {
+(function () {
 	Vue.component('my-menu', {
 		template: `
 		<div id="menu-content" v-on:click="$event.stopPropagation()">
@@ -63,13 +101,13 @@
 			</ul>
 		</div>`,
 		methods: {
-			gotoPage: function(e, pageName) {
+			gotoPage: function (e, pageName) {
 				e.preventDefault();
 				gotoPage(pageName);
 				$('#menu-wrapper').removeClass('show');
 			}
 		},
-		data: function() {
+		data: function () {
 			return {
 				pages: pages
 			};
@@ -77,11 +115,11 @@
 	});
 })();
 
-(function() {
+(function () {
 	var data = {
 		infoscreen: infoscreen
 	};
-	var updateDomElements = function() {
+	var updateDomElements = function () {
 		var viewerDomElement = $(this.$el);
 		data.domElements = {};
 		for (view in infoscreenRuntime.views) {
@@ -106,15 +144,15 @@
 			
 			</div>
 		</div>`,
-		data: function() {
+		data: function () {
 			return data;
 		},
-		mounted: function() {
+		mounted: function () {
 			updateDomElements.call(this);
 		},
 		watch: {
 			'infoscreen.container': {
-				handler: function() {
+				handler: function () {
 					updateDomElements.call(this);
 				},
 				deep: true
@@ -123,7 +161,7 @@
 	});
 })();
 
-(function() {
+(function () {
 	var navbarItemsWrapper = {
 		navbarItems: []
 	};
@@ -146,15 +184,15 @@
 		</div>
 		`,
 		methods: {
-			toggleMenu: function() {
+			toggleMenu: function () {
 				$('#menu-wrapper').toggleClass('show');
 			}
 		},
-		data: function() {
+		data: function () {
 			return navbarItemsWrapper;
 		},
-		mounted: function() {
-			this.$bus.$on('pageChanged', function() {
+		mounted: function () {
+			this.$bus.$on('pageChanged', function () {
 				var currentPageNavbarItems = getCurrentPage().navbarItems;
 				if (!currentPageNavbarItems) {
 					currentPageNavbarItems = [];
@@ -165,11 +203,12 @@
 	});
 })();
 
-(function(){
+(function () {
 	Vue.component('propertyEditor', {
 		template: `
             <div class="propertyEditor">
                 <div id="argumentEditor" class="leftColumn">
+					<argumentEditor v-for="argumentName in argumentNames" v-bind:argumentName="argumentName" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
 					<button id="btnAddArgument" v-on:click="addArgument">Add Argument</button>
 				</div>
 				<div class="rightColumn">
@@ -177,40 +216,49 @@
 				</div>
             </div>
 			`,
+		data: function () {
+			return { argumentNames: [] }
+		},
 		methods: {
-			addArgument: function(event){
-				var btn = event.target;
+			addArgument: function (event) {
+				var _this = this;
+				this.addButton = $(event.target);
 				var holder = $("#argumentEditor");
-				btn.remove();
-				
+				this.addButton.remove();
+
 				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
 				var keys = Object.keys(inputs);
-				var select = $("<select>", {selectedIndex: -1});
+				var select = $("<select>", { selectedIndex: -1 });
 
 				// add all remaining inputs to select list
 				var optionCnt = 0;
-				for(var i in keys){
-					if(Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1){
-						$("<option>", {text: inputs[keys[i]]}).appendTo(select);
+				for (var i in keys) {
+					if (Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1) {
+						$("<option>", { text: inputs[keys[i]] }).appendTo(select);
 						optionCnt++;
 					}
 				}
 				select.appendTo(holder).selectmenu({
-					select: function(event, ui){
+					select: function (event, ui) {
 						// add argumentEditor for selected input
 						// TODO remove input from variables editor if necessary
-						$("<div>").appendTo(holder).argumentEditor({argumentName: ui.item.label});
+						//$("<div>").appendTo(holder).argumentEditor({ argumentName: ui.item.label });
+						_this.argumentNames.push(ui.item.label);
 						optionCnt--;
 					},
-					close: function(){
+					close: function () {
 						select.remove();
-						if(optionCnt > 0){
+						if (optionCnt > 0) {
 							// display add button only when they are remaining inputs
-							$(btn).appendTo(holder);
+							this.addButton.appendTo(holder);
 						}
 					}
-				}).selectmenu("open");      
+				}).selectmenu("open");
 			},
+			removeArgument: function (argumentName) {
+				this.argumentNames.splice(this.argumentNames.indexOf(argumentName),1);
+				this.addButton.appendTo($("#argumentEditor"));
+			}
 		}
 	})
 })();
