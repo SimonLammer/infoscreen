@@ -16,25 +16,36 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // 'https://unpkg.com/vue@2.3.0',
-      'src/entities/*.js',
-      'src/module_types/*.js',
-      'src/globals.js',
+      //'src/entities/*.js',
+      //'src/module_types/*.js',
+      //'src/globals.js',
       // 'src/vue-components.js',
       // 'src/index.js',
-      'tests/**/*.js'
+      './tests/**/*.ts'
     ],
 
 
     // list of files to exclude
     exclude: [
+      
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      '**/*.ts': ['typescript']
     },
-
+/*
+    typescriptPreprocessor: {
+      options: {
+        sourceMap: true, // generate source maps
+        noResolve: false // enforce type resolution
+      },
+      transformPath: function(path) {
+        return path.replace(/\.ts$/, '.js');
+      }
+    },*/
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -62,11 +73,14 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-      //'PhantomJS',
+      /* */
+      'PhantomJS',
+      /* * /
       'Chrome',
       'Firefox',
       // 'Opera',
-      'IE'
+      'IE',
+      /* */
     ],
 
     plugins : [
@@ -75,7 +89,8 @@ module.exports = function(config) {
         'karma-firefox-launcher',
         //'karma-opera-launcher',
         'karma-ie-launcher',
-        'karma-jasmine'
+        'karma-jasmine',
+        'karma-typescript-preprocessor',
     ],
 
     // Continuous Integration mode

@@ -12,7 +12,7 @@
     "vue": "^2.3.3"
   },
   "devDependencies": {
-    "@types/node": "^7.0.18",
+    "@types/jasmine": "^2.5.47",
     "clean-webpack-plugin": "^0.1.16",
     "concurrently": "^3.4.0",
     "css-loader": "^0.28.1",
@@ -29,6 +29,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-opera-launcher": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.4",
+    "karma-typescript-preprocessor": "^0.3.1",
     "node-sass": "^4.5.2",
     "open-browser-webpack-plugin": "0.0.5",
     "sass-loader": "^6.0.5",
@@ -45,7 +46,6 @@
     "prestart": "npm run webpack",
     "start": "http-server dist",
     "dev": "webpack-dev-server",
-    "pretest": "npm run webpack",
     "test": "karma start --browsers PhantomJS && karma start",
     "webpack": "webpack -p"
   },

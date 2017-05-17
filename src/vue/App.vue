@@ -3,34 +3,30 @@
     <input v-model="message">
     <button @click="onClick">Greet</button>
     <div>Inner DIV</div>
-    <other-component></other-component>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { ComponentOptions }  from 'vue'
-import { MyClass } from '../app.ts'
-
-import OtherComponent from './OtherComponent.vue';
+//import { MyClass } from '../app.ts'
+//import OtherComponent from './OtherComponent.vue';
 
 interface MyComponent extends Vue {
   message: string
-  num : MyClass
   onClick (): void
 }
 export default {
   components: {
-    OtherComponent
+    //OtherComponent
   },
   data: function () {
     return {
-      message: `Hello!`,
-      num: new MyClass(4)
+      message: `Hello!`
     }
   },
   methods: {
     onClick: function () {
-      window.alert(this.message + " - " + this.num.getNumber());
+      window.alert(this.message + " - ");
     }
   }
 } as ComponentOptions<MyComponent>
