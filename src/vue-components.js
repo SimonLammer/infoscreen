@@ -211,21 +211,21 @@
 		template: `
             <div class="propertyEditor">
                 <div id="argumentEditor" class="leftColumn">
-					<argumentEditor v-for="(argumentName,i) in argumentNames" :argumentName="argumentName" :initialValue="argumentValues[i]" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
-					<button id="btnAddArgument" v-on:click="addArgument">Add Argument</button>
+					<argumentEditor v-for="(argumentName,i) in argumentNames" :argumentName="argumentName" :initialValue="initialArgumentValues[i]" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
+					<button id="btnAddArgument"  v-on:click="addArgument" v-if="argsAvailable()">Add Argument</button>
 				</div>
 				<div id="variableArgumentEditor" class="rightColumn">
-					<variableEditor v-for="(argumentName, i) in variableArgumentNames" :argumentName="argumentName" :initialValue="variableArgumentValues[i]" :key="argumentName" v-on:remove="removeVariable(argumentName)"></variableEditor>
-					<button id="btnAddVariable" v-on:click="addVariable">Add Variable as Argument</button>
+					<variableEditor v-for="(argumentName, i) in variableArgumentNames" :argumentName="argumentName" :initialValue="initialVariableArgumentValues[i]" :key="argumentName" v-on:remove="removeVariable(argumentName)"></variableEditor>
+					<button id="btnAddVariable" v-on:click="addVariable" v-if="argsAvailable()">Add Variable as Argument</button>
 				</div>
             </div>
 			`,
 		data: function () {
 			return {
 				argumentNames: [],
-				argumentValues: [],
+				initialArgumentValues: [],
 				variableArgumentNames: [],
-				variableArgumentValues: [],
+				initialVariableArgumentValues: [],
 				argumentAddButton: $("#btnAddArgument"), 
 				variableAddButton: $("#btnAddVariable")
 			}
@@ -234,11 +234,11 @@
 			var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
 			for(arg in currentContainer.view.arguments){
 				this.argumentNames.push(inputs[arg]);
-				this.argumentValues.push(currentContainer.view.arguments[arg])
+				this.initialArgumentValues.push(currentContainer.view.arguments[arg])
 			}
 			for(arg in currentContainer.view.variables){
 				this.variableArgumentNames.push(inputs[arg]);
-				this.variableArgumentValues.push(currentContainer.view.variables[arg]);
+				this.initialVariableArgumentValues.push(currentContainer.view.variables[arg]);
 			}
 		},
 		methods: {
@@ -254,11 +254,11 @@
 			},
 			removeArgument: function (argumentName) {
 				this.argumentNames.splice(this.argumentNames.indexOf(argumentName), 1);
-				this.argumentAddButton.appendTo($("#argumentEditor"));
+				//this.argumentAddButton.appendTo($("#argumentEditor"));
 			},
 			removeVariable: function (argumentName) {
 				this.variableArgumentNames.splice(this.variableArgumentNames.indexOf(argumentName), 1);
-				this.variableAddButton.appendTo($("#variableArgumentEditor"));
+				//this.variableAddButton.appendTo($("#variableArgumentEditor"));
 			},
 
 			getAvailableArguments: function () {
@@ -272,7 +272,7 @@
 				}
 				return args;
 			},
-			showSelectPopup(container, button, selectionArray) {
+			showSelectPopup: function(container, button, selectionArray) {
 				container.selectPopup({
 					data: this.getAvailableArguments(),
 					select: function (event, selectedVar) {
@@ -280,9 +280,13 @@
 					},
 					close: function () {
 						container.selectPopup("destroy");
-						button.appendTo(container);
+						button.appendTo(container);						
 					}
 				})
+			},
+			argsAvailable: function(){
+				console.log("update " + this.argumentNames.length + " + " + this.variableArgumentNames.length + " < " + Object.keys(getModuleTypeByName(currentContainer.view.type).inputs).length);
+				return this.argumentNames.length + this.variableArgumentNames.length < Object.keys(getModuleTypeByName(currentContainer.view.type).inputs).length;
 			}
 		}
 	})
