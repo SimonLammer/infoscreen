@@ -19,7 +19,7 @@
 				argumentValue: ''
 			};
 		},
-		created: function(){
+		created: function () {
 			this.argumentValue = this.initialValue;
 		},
 		watch: {
@@ -53,11 +53,22 @@
                 <div class="buttonBar" >
 	                <button v-on:click="addContainer">Add Container</button>
                 </div>
-				NAVIGATION
+				<div v-for="c in container" v-on:click="selectContainer(c)"><label>{{c.name}}</label></div>
             </div>`,
+		computed: {
+			container: function () {
+				return infoscreen.container;
+			}
+		},
 		methods: {
 			addContainer: function (event) {
 				infoscreen.container.push(createDefaultContainer());
+			},
+			selectContainer: function (container) {
+				currentContainer = container;
+				this.$bus.$emit('selectedContainerChange', {
+					container: container
+				});
 			}
 		}
 	})
@@ -226,28 +237,38 @@
 				initialArgumentValues: [],
 				variableArgumentNames: [],
 				initialVariableArgumentValues: [],
-				argumentAddButton: $("#btnAddArgument"), 
+				argumentAddButton: $("#btnAddArgument"),
 				variableAddButton: $("#btnAddVariable")
 			}
 		},
-		created: function(){
-			var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
-			for(arg in currentContainer.view.arguments){
-				this.argumentNames.push(inputs[arg]);
-				this.initialArgumentValues.push(currentContainer.view.arguments[arg])
-			}
-			for(arg in currentContainer.view.variables){
-				this.variableArgumentNames.push(inputs[arg]);
-				this.initialVariableArgumentValues.push(currentContainer.view.variables[arg]);
-			}
+		created: function () {
+			this.$bus.$on("selectedContainerChange", container => {
+				this.init();
+			});
+			this.init();
 		},
 		methods: {
+			init: function () {
+				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
+				this.argumentNames = [];
+				this.initialArgumentValues = [];
+				for (arg in currentContainer.view.arguments) {
+					this.argumentNames.push(inputs[arg]);
+					this.initialArgumentValues.push(currentContainer.view.arguments[arg])
+				}
+				this.variableArgumentNames = [];
+				this.initialVariableArgumentValues = [];
+				for (arg in currentContainer.view.variables) {
+					this.variableArgumentNames.push(inputs[arg]);
+					this.initialVariableArgumentValues.push(currentContainer.view.variables[arg]);
+				}
+			},
 			addArgument: function (event) {
 				this.argumentAddButton = $("#btnAddArgument");
 				this.argumentAddButton.remove();
 				this.showSelectPopup($("#argumentEditor"), this.argumentAddButton, this.argumentNames);
 			},
-			addVariable: function (event) { 
+			addVariable: function (event) {
 				this.variableAddButton = $("#btnAddVariable");
 				this.variableAddButton.remove();
 				this.showSelectPopup($("#variableArgumentEditor"), this.variableAddButton, this.variableArgumentNames);
@@ -264,13 +285,13 @@
 				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
 				var keys = Object.keys(inputs);
 				for (var i in keys) {
-					if (Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1 && Object.keys(currentContainer.view.variables).indexOf(keys[i]) == -1 ) {
+					if (Object.keys(currentContainer.view.arguments).indexOf(keys[i]) == -1 && Object.keys(currentContainer.view.variables).indexOf(keys[i]) == -1) {
 						args.push(inputs[keys[i]]);
 					}
 				}
 				return args;
 			},
-			showSelectPopup: function(container, button, selectionArray) {
+			showSelectPopup: function (container, button, selectionArray) {
 				container.selectPopup({
 					data: this.getAvailableArguments(),
 					select: function (event, selectedVar) {
@@ -278,11 +299,11 @@
 					},
 					close: function () {
 						container.selectPopup("destroy");
-						button.appendTo(container);						
+						button.appendTo(container);
 					}
 				})
 			},
-			argsAvailable: function(){
+			argsAvailable: function () {
 				return this.argumentNames.length + this.variableArgumentNames.length < Object.keys(getModuleTypeByName(currentContainer.view.type).inputs).length;
 			}
 		}
@@ -306,7 +327,7 @@
 				selectedVar: ''
 			};
 		},
-		created: function(){
+		created: function () {
 			this.selectedVar = this.initialValue;
 		},
 		computed: {

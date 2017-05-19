@@ -28,6 +28,27 @@ var infoscreen = {
                     color: 5      // use the value of the variable with id 5 as input-variable 'color' (defined in the ModuleType)
                 }
             }
+        },
+        {
+            name: 'Second sample container',
+            position: {
+                x: 60,             //  60 %
+                y: 40             // 40 %
+            },
+            size: {
+                width: 11,        // 11 %
+                height: 12        // 12 %
+            },
+            zindex: 4,
+            view: {
+                type: 'Color',    // ModuleType name
+                arguments: {
+                     color: '#900' // could be set to a fixed value here, but in this example, the color should change dynamically, according to the 'Color' variable
+                },
+                variables: {
+                    //color: 5      // use the value of the variable with id 5 as input-variable 'color' (defined in the ModuleType)
+                }
+            }
         }
     ],
     processes: [
