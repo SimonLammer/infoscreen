@@ -222,10 +222,12 @@
 		template: `
             <div class="propertyEditor">
                 <div id="argumentEditor" class="leftColumn">
+					Arguments for {{container.name}}
 					<argumentEditor v-for="(argumentName,i) in argumentNames" :argumentName="argumentName" :initialValue="initialArgumentValues[i]" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
 					<button id="btnAddArgument"  v-on:click="addArgument" v-if="argsAvailable()">Add Argument</button>
 				</div>
 				<div id="variableArgumentEditor" class="rightColumn">
+					Properties for {{container.name}}
 					<variableEditor v-for="(argumentName, i) in variableArgumentNames" :argumentName="argumentName" :initialValue="initialVariableArgumentValues[i]" :key="argumentName" v-on:remove="removeVariable(argumentName)"></variableEditor>
 					<button id="btnAddVariable" v-on:click="addVariable" v-if="argsAvailable()">Add Variable as Argument</button>
 				</div>
@@ -238,7 +240,8 @@
 				variableArgumentNames: [],
 				initialVariableArgumentValues: [],
 				argumentAddButton: $("#btnAddArgument"),
-				variableAddButton: $("#btnAddVariable")
+				variableAddButton: $("#btnAddVariable"),
+				container: null
 			}
 		},
 		created: function () {
@@ -249,18 +252,19 @@
 		},
 		methods: {
 			init: function () {
-				var inputs = getModuleTypeByName(currentContainer.view.type).inputs;
+				this.container = currentContainer;				
+				var inputs = getModuleTypeByName(this.container.view.type).inputs;
 				this.argumentNames = [];
 				this.initialArgumentValues = [];
-				for (arg in currentContainer.view.arguments) {
+				for (arg in this.container.view.arguments) {
 					this.argumentNames.push(inputs[arg]);
-					this.initialArgumentValues.push(currentContainer.view.arguments[arg])
+					this.initialArgumentValues.push(this.container.view.arguments[arg])
 				}
 				this.variableArgumentNames = [];
 				this.initialVariableArgumentValues = [];
-				for (arg in currentContainer.view.variables) {
+				for (arg in this.container.view.variables) {
 					this.variableArgumentNames.push(inputs[arg]);
-					this.initialVariableArgumentValues.push(currentContainer.view.variables[arg]);
+					this.initialVariableArgumentValues.push(this.container.view.variables[arg]);
 				}
 			},
 			addArgument: function (event) {
