@@ -89,13 +89,13 @@
 				</select>
             </div>`
 		,
-		computed:{
-			moduleTypes: function(){
+		computed: {
+			moduleTypes: function () {
 				return moduleTypes;
 			}
 		},
 		watch: {
-			moduleType: function(val){
+			moduleType: function (val) {
 				currentContainer.view = new Module(getModuleTypeByName(this.moduleType), {}, {}, {});
 				this.$bus.$emit('viewChange', null);
 			}
@@ -103,15 +103,15 @@
 		data: function () {
 			return {
 				moduleType: currentContainer.view.type,
-				props : {}
+				props: {}
 			}
 		},
-		created: function(){
+		created: function () {
 			this.$bus.$on("viewChange", _ => { this.init(); });
 			this.init();
 		},
 		methods: {
-			init: function(){
+			init: function () {
 				this.props = currentContainer;
 			}
 		}
@@ -129,6 +129,7 @@
                 <div class="rightColumn">
                     <containerNavigation />
                     <containerPropertyEditor />
+					<variables />
                 </div>
             </div>`
 	})
@@ -348,6 +349,23 @@
 })();
 
 (function () {
+	Vue.component('variable', {
+		template: `
+            <div class="variable">
+                <input v-model="variable.name" />
+				<input v-model="variable.value" />
+				<button v-on:click="remove">X</button>
+            </div>`,
+		props: ['variable'],
+		methods: {
+			remove: function(){
+				this.$emit('remove');
+			}
+		}
+	})
+})();
+
+(function () {
 	Vue.component('variableEditor', {
 		template: `
             <div>
@@ -391,6 +409,32 @@
 				return Object.keys(moduleType.inputs).find(function (key) {
 					return moduleType.inputs[key] == _this.argumentName;
 				});
+			}
+		}
+	})
+})();
+
+
+
+(function () {
+	Vue.component('variables', {
+		template: `
+            <div class="variables">
+                Variables
+				<variable v-for="variable in variables" :key="variable.id" v-bind="{ variable:variable }" v-on:remove="removeVariable(variable)" />
+				<button v-on:click="addVariable">Add Variable</button>
+            </div>`,
+		computed: {
+			variables: function () {
+				return infoscreen.variables;
+			}
+		},
+		methods: {
+			addVariable: function(){
+				infoscreen.variables.push(new Variable("New variable", "Default value"));
+			},
+			removeVariable: function(variable){
+				infoscreen.variables.splice(infoscreen.variables.indexOf(variable),1);
 			}
 		}
 	})
