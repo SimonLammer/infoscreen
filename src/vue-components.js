@@ -66,9 +66,7 @@
 			},
 			selectContainer: function (container) {
 				currentContainer = container;
-				this.$bus.$emit('selectedContainerChange', {
-					container: container
-				});
+				this.$bus.$emit('viewChange', null);
 			}
 		}
 	})
@@ -78,8 +76,45 @@
 	Vue.component('containerPropertyEditor', {
 		template: `
             <div class="containerPropertyEditor">
-                CONTAINER PROPERTIES
+				Properties for container "{{props.name}}"<br/>
+                <label>Name</label><input v-model="props.name" /><br/>
+				<label>X</label><input v-model="props.position.x" /><br/>
+				<label>Y</label><input v-model="props.position.y" /><br/>
+				<label>Width</label><input v-model="props.size.width" /><br/>
+				<label>Height</label><input v-model="props.size.height" /><br/>
+				<label>Z-Index</label><input v-model="props.zindex" /><br/>
+				<label>View</label>
+				<select v-model="moduleType">
+					<option v-for="moduleType in moduleTypes">{{moduleType.name}}</option>
+				</select>
             </div>`
+		,
+		computed:{
+			moduleTypes: function(){
+				return moduleTypes;
+			}
+		},
+		watch: {
+			moduleType: function(val){
+				currentContainer.view = new Module(getModuleTypeByName(this.moduleType), {}, {}, {});
+				this.$bus.$emit('viewChange', null);
+			}
+		},
+		data: function () {
+			return {
+				moduleType: currentContainer.view.type,
+				props : {}
+			}
+		},
+		created: function(){
+			this.$bus.$on("viewChange", _ => { this.init(); });
+			this.init();
+		},
+		methods: {
+			init: function(){
+				this.props = currentContainer;
+			}
+		}
 	})
 })();
 
@@ -222,12 +257,12 @@
 		template: `
             <div class="propertyEditor">
                 <div id="argumentEditor" class="leftColumn">
-					Arguments for {{container.name}}
+					Arguments for {{container.view.type}} in {{container.name}}
 					<argumentEditor v-for="(argumentName,i) in argumentNames" :argumentName="argumentName" :initialValue="initialArgumentValues[i]" :key="argumentName" v-on:remove="removeArgument(argumentName)"></argumentEditor>
 					<button id="btnAddArgument"  v-on:click="addArgument" v-if="argsAvailable()">Add Argument</button>
 				</div>
 				<div id="variableArgumentEditor" class="rightColumn">
-					Properties for {{container.name}}
+					Properties for for {{container.view.type}} in {{container.name}}
 					<variableEditor v-for="(argumentName, i) in variableArgumentNames" :argumentName="argumentName" :initialValue="initialVariableArgumentValues[i]" :key="argumentName" v-on:remove="removeVariable(argumentName)"></variableEditor>
 					<button id="btnAddVariable" v-on:click="addVariable" v-if="argsAvailable()">Add Variable as Argument</button>
 				</div>
@@ -245,14 +280,12 @@
 			}
 		},
 		created: function () {
-			this.$bus.$on("selectedContainerChange", container => {
-				this.init();
-			});
+			this.$bus.$on("viewChange", _ => { this.init(); });
 			this.init();
 		},
 		methods: {
 			init: function () {
-				this.container = currentContainer;				
+				this.container = currentContainer;
 				var inputs = getModuleTypeByName(this.container.view.type).inputs;
 				this.argumentNames = [];
 				this.initialArgumentValues = [];
