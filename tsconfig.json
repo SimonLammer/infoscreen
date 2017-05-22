@@ -2,7 +2,16 @@
 	"compilerOptions": { 
 		"target": "es5",
     	"module": "commonjs",
+		"experimentalDecorators": true,
+		"noImplicitAny": true,
+		"allowSyntheticDefaultImports": true,
+		"lib": [
+			"dom",
+			"es5",
+			"es2015.promise"
+		],
 		"types": [
+			"node",
 			"jasmine"
 		],
 		"typeRoots": [

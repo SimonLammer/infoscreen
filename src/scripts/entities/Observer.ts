@@ -1,3 +1,3 @@
 export interface Observer {
-	callback(data) : void;
+	callback(data : any) : void;
 }

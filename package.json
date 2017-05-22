@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "@types/jasmine": "^2.5.47",
+    "@types/node": "^7.0.21",
+    "@types/vue": "^2.0.0",
     "clean-webpack-plugin": "^0.1.16",
     "concurrently": "^3.4.0",
     "css-loader": "^0.28.1",
