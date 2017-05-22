@@ -1,25 +1,16 @@
 {
-	"files": [
-		"src/app.ts"
-	],
-	"include": [
-		"src/**/*.ts"
-	],
 	"compilerOptions": { 
 		"target": "es5",
-		"lib": [
-			"dom",
-			"es2015"
-		],
-		"allowSyntheticDefaultImports": true,
-		"experimentalDecorators": true,
-		"sourceMap": true,
+    	"module": "commonjs",
 		"types": [
 			"jasmine"
 		],
 		"typeRoots": [
 			"node_modules/@types"
 		],
-		"noEmit": false
-	}
+		"sourceMap": true
+	},
+	"exclude": [
+		"node_modules"
+	]
 }
