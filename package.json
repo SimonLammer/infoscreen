@@ -47,10 +47,11 @@
     "webpack-dev-server": "^2.4.5"
   },
   "scripts": {
-    "prestart": "npm run webpack",
+    "build": "npm run webpack",
     "start": "http-server dist",
     "dev": "webpack-dev-server",
-    "test": "karma start --browsers PhantomJS --single-run && karma start --browsers Chrome,Firefox,IE --single-run",
+    "test": "npm run test:headless && karma start --browsers Chrome,Firefox,IE --single-run",
+    "test:headless": "karma start --browsers PhantomJS --single-run",
     "webpack": "webpack -p"
   },
   "repository": {
