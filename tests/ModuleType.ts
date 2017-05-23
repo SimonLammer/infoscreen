@@ -1,11 +1,17 @@
 import { ModuleType } from '../src/scripts/entities/ModuleType';
 
+class MyModuleType<I, O> extends ModuleType<I, O> {
+	handle(inputs: any, $container?: JQuery): O {
+		return super.handle(inputs, $container);
+	}
+}
+
 describe('ModuleType', () => {
 	it('handles runtime-input', () => {
 		interface In {
 			value: number;
 		}
-		let incrementor = new ModuleType<In,Number>(
+		let incrementor = new MyModuleType<In,Number>(
 			'Incrementor', {
 				value: 'Number'
 			}, (inputs) => {
@@ -16,6 +22,6 @@ describe('ModuleType', () => {
 		let runtimeInput = JSON.parse(JSON.stringify({
 			value: data
 		}));
-		expect(incrementor.handle(runtimeInput as In)).toBe(data + 1);
+		expect(incrementor.handle(runtimeInput)).toBe(data + 1);
 	});
 });
