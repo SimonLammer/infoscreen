@@ -15,9 +15,9 @@ export abstract class Module {
 	constructor(
 		readonly id: number,
 		readonly moduleType: ModuleType<any, any>,
-		public args: {[key: string]: any},
-		public vars: VariableContainer,
-		public outputs: VariableContainer,
+		readonly args: {[key: string]: any},
+		readonly vars: VariableContainer,
+		readonly outputs: VariableContainer,
 		public $container: JQuery
 	) {
 		this.enable();
