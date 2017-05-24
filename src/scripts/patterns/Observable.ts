@@ -1,4 +1,5 @@
 import { Observer } from './Observer';
+export { Observer }
 
 export class Observable<T> {
 	private observers = new Array<Observer<T>>();

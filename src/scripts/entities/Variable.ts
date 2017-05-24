@@ -1,4 +1,8 @@
-import { Observable } from "../patterns/Observable";
+import { Observable, Observer } from "../patterns/Observable";
+export { Observer };
+export interface VariableContainer {
+	[key: string]: Variable<any>
+};
 
 export class Variable<T> {
 	private observable: Observable<T> = new Observable<T>();
@@ -9,15 +13,23 @@ export class Variable<T> {
 		public name: String,
 		public defaultValue: T
 	) {
-
+		this._value = defaultValue;
 	}
 
-	get value() {
+	get value(): T {
 		return this._value;
 	}
 
 	set value(value: T) {
 		this._value = value;
 		this.observable.notifyObservers(value);
+	}
+
+	addObserver(observer: Observer<T>): void {
+		this.observable.addObserver(observer);
+	}
+
+	removeObserver(observer: Observer<T>): void {
+		this.observable.removeObserver(observer);
 	}
 }

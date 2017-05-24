@@ -1,4 +1,4 @@
-import { Variable } from '../src/scripts/entities/Variable';
+import { Module } from '../src/scripts/entities/Module';
 
 describe('test', () => {
 	it('tests stuff', () => {

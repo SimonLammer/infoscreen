@@ -1,7 +1,7 @@
 import { Observable } from '../src/scripts/patterns/Observable';
 import { Observer } from '../src/scripts/patterns/Observer';
 
-class DummyObserver implements Observer<number> {
+export class DummyObserver implements Observer<number> {
 	public notificationCounter: number = 0;
 	public data: number;
 	receiveNotification(data: number): void {
